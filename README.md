@@ -10,9 +10,14 @@ An Application which allows users to tranfer the ownership of real estate proper
 	3  Can view list of properties 
 	4  Can Create New Properties - Admin would be the owner of newly created properties. 
 	5  Can Transfer Ownership of the properties to other users of the system. Can trasfer the ownership where properties are owned by Admin only.
-	6  Can Create New users 
-	7  
+	6  Can See history of a property.
+	7  Can View List of Users
+	8  Can Create New users. 
 
 ### 2. App User
+	1 Can Log Into the system.
+	2 Can see list of properties which are owned by that user.
+	3 Can transfer the ownership of the property to any other user of the system.
+	4 
 
 
