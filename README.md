@@ -18,6 +18,6 @@ An Application which allows users to tranfer the ownership of real estate proper
 	1 Can Log Into the system.
 	2 Can see list of properties which are owned by that user.
 	3 Can transfer the ownership of the property to any other user of the system.
-	4 
+
 
 
