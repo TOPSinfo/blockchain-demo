@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import Header from '../Header/Header';
-
+import {withRouter} from 'react-router-dom'
 import BodySection from './BodySection/BodySection'
+
 class Home extends Component {
 
     render() {
@@ -15,4 +16,5 @@ class Home extends Component {
         );
     }
 }
-export default Home;
+
+export default withRouter (Home);

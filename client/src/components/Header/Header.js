@@ -1,12 +1,20 @@
 import React, { Component } from "react";
-import logo from '../../asserts/img/logo.png'
+ader.js
+import logo from '../../asserts/img/logo.png';
+import { connect } from 'react-redux';
+import {withRouter} from 'react-router-dom';
+
 class Header extends Component {
 
     constructor(props){
         super(props);
-
+        this.handleClick=this.handleClick.bind(this)
     }
 
+    handleClick=(e)=>{
+        console.log("click")
+        this.props.history.push({pathname:"/LoginForm"})
+    }
     render() {
         return (
             <header id="header" className="header-top">
@@ -31,4 +39,4 @@ class Header extends Component {
     }
 }
 
-export default Header;
+export default withRouter (Header);
