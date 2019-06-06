@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import SimpleStorageContract from "./contracts/SimpleStorage.json";
 import getWeb3 from "./utils/getWeb3";
-import Home from "./components/Home/Home"
+import Home from "./components/Home/Home";
+import TransferLand from "./components/TransferLand/TransferLand";
+import ManageLands from "./components/ManageLands/ManageLands";
+import ManageUsers from "./components/ManageUsers/ManageUsers"
+
 import "./App.css";
 
 class App extends Component {
@@ -53,7 +57,7 @@ class App extends Component {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
     return (
-       <Home/>
+       <Home  />
     );
   }
 }

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import logo from '../../../asserts/img/logo.png'
+import logo from '../../asserts/img/logo.png'
 class Header extends Component {
-    
+
     constructor(props){
         super(props);
 
@@ -17,17 +17,11 @@ class Header extends Component {
                 </div>
                 <nav id="nav-menu-container">
                     <ul className="nav-menu">
-                    <li className="menu-active"><a href="#home">Home</a></li>
-                    <li><a href="#convert">Convert</a></li>   
-                    <li><a href="#feature">Feature</a></li>
-                    <li><a href="#price">Price</a></li>
-                    <li><a href="#blog">Blog</a></li>
-                    <li className="menu-has-children"><a href="">Pages</a>
-                        <ul>
-                        <li><a href="generic.html">Generic</a></li>
-                        <li><a href="elements.html">Elements</a></li>
-                        </ul>
-                    </li>
+                    <li className="menu-active"><a href="#">Home</a></li>
+                    <li><a href="#">Transfer</a></li>
+                    <li><a href="#">View and Create</a></li>
+                    <li><a href="#">Users</a></li>
+                    <li><a href="#">About</a></li>
                     </ul>
                 </nav>
                 </div>

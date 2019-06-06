@@ -1,21 +1,16 @@
 import React, { Component } from "react";
-import Header from './Header/Header';
-import Footer from './Footer/Footer';
+import Header from '../Header/Header';
+
 import BodySection from './BodySection/BodySection'
 class Home extends Component {
-    
-    constructor(props){
-        super(props);
-    }
 
     render() {
         return (
         <React.Fragment>
             <div className="App">
                 <Header/>
-                    <BodySection/>
-                <Footer/>
-            </div>   
+                <BodySection/>
+            </div>
         </React.Fragment>
         );
     }
