@@ -24,9 +24,9 @@ class App extends Component {
 
       this.setState({ web3, accounts, contract: instance }, this.runExample);
     } catch (error) {
-      alert(
-        `Failed to load web3, accounts, or contract. Check console for details.`,
-      );
+      // alert(
+      //   `Failed to load web3, accounts, or contract. Check console for details.`,
+      // );
       console.error(error);
     }
   };
@@ -52,10 +52,6 @@ class App extends Component {
          <Route exact path='/LoginForm' 
           render={ ()=>(<LoginForm />) }>
         </Route>
-      {/*
-        <Route exact path='/FirstPage' 
-          render={ ()=>(<FirstPage />) }>
-        </Route> */}
       </Switch>
     </Router> 
     );

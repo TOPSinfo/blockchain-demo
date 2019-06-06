@@ -3,19 +3,18 @@ import t from '../../actions/auth/types';
 export default function(
   state = {
     isAuthenticated: false,
-    profile: {},
+    profile:'',
   },
   action
 ) {
   switch (action.type) {
-    case t.LOGIN:
+   
+    case  t.SET_USER_ID:
       if (action.payload) {
-        state.isAuthenticated = true;
+        state.profile = action.payload;
       }
       return { ...state };
-    case t.LOGOUT:
-      state.isAuthenticated = false;
-      return { ...state };
+   
     case t.CHECK_AUTH:
       state.isAuthenticated = true;
       return { ...state };

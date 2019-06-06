@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux'
 import {withRouter} from 'react-router-dom'
 import Header from './Header/Header';
 import Footer from './Footer/Footer';
@@ -22,7 +21,5 @@ class Home extends Component {
         );
     }
 }
-
-// export default withRouter ( connect(mapStateToProps)(Home));
 
 export default withRouter (Home);
