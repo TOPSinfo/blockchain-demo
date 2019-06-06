@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-ader.js
+
 import logo from '../../asserts/img/logo.png';
 import { connect } from 'react-redux';
 import {withRouter} from 'react-router-dom';
