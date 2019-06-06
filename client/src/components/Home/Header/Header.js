@@ -1,12 +1,18 @@
 import React, { Component } from "react";
 import logo from '../../../asserts/img/logo.png'
+import { connect } from 'react-redux'
+import {withRouter} from 'react-router-dom'
 class Header extends Component {
     
     constructor(props){
         super(props);
-
+        this.handleClick=this.handleClick.bind(this)
     }
 
+    handleClick=(e)=>{
+        console.log("click")
+        this.props.history.push({pathname:"/LoginForm"})
+    }
     render() {
         return (
             <header id="header" className="header-top">
@@ -19,7 +25,7 @@ class Header extends Component {
                     <ul className="nav-menu">
                     <li className="menu-active"><a href="#home">Home</a></li>
                     <li><a href="#convert">Convert</a></li>   
-                    <li><a href="#feature">Feature</a></li>
+                    <li><a onClick={this.handleClick }>Login</a></li>
                     <li><a href="#price">Price</a></li>
                     <li><a href="#blog">Blog</a></li>
                     <li className="menu-has-children"><a href="">Pages</a>
@@ -37,4 +43,4 @@ class Header extends Component {
     }
 }
 
-export default Header;
+export default withRouter (Header);
