@@ -9,7 +9,7 @@ import ManageUsers from "./components/ManageUsers/ManageUsers"
 import  History  from './history';
 import { Router,Route,Switch } from 'react-router-dom'
 import LoginForm from "./components/LoginForm/LoginForm"
-
+import About from "./components/About/About"
 import "./App.css";
 
 class App extends Component {
@@ -46,17 +46,29 @@ class App extends Component {
 
   render() {
     if (!this.state.web3) {
-      return <div>Loading Web3, accounts, and contract...</div>;
+      return <div>Loading ...</div>;
     }
     return (
       <Router history={History}>
       <Switch>
         <Route exact path='/'
-          render={ ()=>(<Home/>) }>
+            render={ ()=>(<Home/>) }>
         </Route>
          <Route exact path='/LoginForm'
-          render={ ()=>(<LoginForm />) }>
-        </Route>
+            render={ ()=>(<LoginForm />) }>
+          </Route>
+          <Route exact path='/transfer-land'
+            render={ ()=>(<TransferLand />) }>
+          </Route>
+          <Route exact path='/lands'
+            render={ ()=>(<ManageLands />) }>
+          </Route>
+          <Route exact path='/users'
+            render={ ()=>(<ManageUsers />) }>
+          </Route>
+          <Route exact path='/about'
+            render={ ()=>(<About />) }>
+          </Route>
       </Switch>
     </Router>
     );

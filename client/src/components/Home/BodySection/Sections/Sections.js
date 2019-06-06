@@ -6,8 +6,12 @@ import logo_b3 from '../../../../asserts/img/s2.png';
 import logo_b5 from '../../../../asserts/img/b5.jpg';
 import logo_b6 from '../../../../asserts/img/b6.jpg';
 
-
+import {withRouter} from 'react-router-dom';
 class Sections extends Component {
+
+	handleComponentChange=(e,pathName)=>{
+        this.props.history.push({pathname:pathName})
+    }
 
     render() {
         return (
@@ -15,36 +19,36 @@ class Sections extends Component {
            <section className="blog-area section-gap" id="blog">
 					<div className="container">
 						<div className="row">
-							<div className="col-lg-4 single-blog">
+							<div className="col-lg-4 single-blog" onClick={(e)=> this.handleComponentChange(e,"/transfer-land")}>
 								<div className="thumb">
 									<img className="img-fluid" src={logo_b1} alt=""/>
 								</div>
 								<div className="desc">
-									<a href="#"><h4>Transfer Owned Land</h4></a>
+									<a><h4>Transfer Owned Land</h4></a>
 									<p>
 										Here You can transfer land owned by you to any of the member of blockchain.
 									</p>
 
 								</div>
 							</div>
-							<div className="col-lg-4 single-blog">
+							<div className="col-lg-4 single-blog" onClick={(e)=> this.handleComponentChange(e,"/lands")}>
 								<div className="thumb">
 									<img className="img-fluid" src={logo_b2} alt=""/>
 								</div>
 								<div className="desc">
-									<a href="#"><h4>View and Create New Lands</h4></a>
+									<a><h4>View and Create New Lands</h4></a>
 									<p>
 										Here you can Create new Lands, and Manage the Lands owned by you.
 									</p>
 
 								</div>
 							</div>
-							<div className="col-lg-4 single-blog">
+							<div className="col-lg-4 single-blog" onClick={(e)=> this.handleComponentChange(e,"/users")}>
 								<div className="thumb">
 									<img className="img-fluid" src={logo_b3} alt=""/>
 								</div>
 								<div className="desc">
-									<a href="#"><h4>Create and Manage User</h4></a>
+									<a><h4>Create and Manage User</h4></a>
 									<p>
 										Here you can create and manage the users of the blockchain.
 									</p>
@@ -58,4 +62,5 @@ class Sections extends Component {
         );
     }
 }
-export default Sections;
+
+export default withRouter (Sections);
