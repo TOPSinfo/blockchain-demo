@@ -1,7 +1,15 @@
 import React, { Component } from "react";
 import SimpleStorageContract from "./contracts/SimpleStorage.json";
 import getWeb3 from "./utils/getWeb3";
-import Routes from "./routes"
+import Routes from './routes'
+// import Home from "./components/Home/Home";
+// import TransferLand from "./components/TransferLand/TransferLand";
+// import ManageLands from "./components/ManageLands/ManageLands";
+// import ManageUsers from "./components/ManageUsers/ManageUsers"
+// import  History  from './history';
+// import { Router,Route,Switch } from 'react-router-dom'
+// import LoginForm from "./components/LoginForm/LoginForm"
+// import About from "./components/About/About"
 import "./App.css";
 
 class App extends Component {
@@ -38,10 +46,10 @@ class App extends Component {
 
   render() {
     if (!this.state.web3) {
-      return <div>Loading Web3, accounts, and contract...</div>;
+      return <div>Loading ...</div>;
     }
     return (
-     <Routes />
+      <Routes/>
     );
   }
 }

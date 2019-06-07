@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "drizzle": "^1.4.0",
+    "mdbreact": "^4.15.0",
     "history": "^4.9.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
