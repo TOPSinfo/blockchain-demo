@@ -9,6 +9,7 @@ class Header extends Component {
     handleComponentChange=(e,pathName)=>{
         this.props.history.push({pathname:pathName})
     }
+
     render() {
         return (
             <header id="header" className="header-top">
@@ -24,6 +25,7 @@ class Header extends Component {
                     <li><a onClick={(e)=> this.handleComponentChange(e,"/lands")}>View and Create</a></li>
                     <li><a onClick={(e)=> this.handleComponentChange(e,"/users")}>Users</a></li>
                     <li><a onClick={(e)=> this.handleComponentChange(e,"/about")}>About</a></li>
+                    <li><a>Log out</a></li>
                     </ul>
                 </nav>
                 </div>
