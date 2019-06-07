@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import SimpleStorageContract from "./contracts/SimpleStorage.json";
 import getWeb3 from "./utils/getWeb3";
-import  History  from './history';
-import { Router,Route,Switch } from 'react-router-dom'
-import Home from "./components/Home/Home";
-import LoginForm from "./components/LoginForm/LoginForm"
+import Routes from "./routes"
 import "./App.css";
 
 class App extends Component {
@@ -44,16 +41,7 @@ class App extends Component {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
     return (
-      <Router history={History}>
-      <Switch>
-        <Route exact path='/' 
-          render={ ()=>(<Home/>) }>
-        </Route>
-         <Route exact path='/LoginForm' 
-          render={ ()=>(<LoginForm />) }>
-        </Route>
-      </Switch>
-    </Router> 
+     <Routes />
     );
   }
 }
