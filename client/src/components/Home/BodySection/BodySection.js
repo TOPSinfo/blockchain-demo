@@ -1,12 +1,9 @@
 import React, { Component } from "react";
-import logo from '../../../asserts/img/bitcoin.png';
 import Sections from './Sections/Sections';
 
 class BodySection extends Component {
 
-    constructor(props){
-        super(props);
-    }
+ 
 
     render() {
         return (

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import logo from '../../asserts/img/bitcoin.png';
 import Header from'../Header/Header';
 import "./About.css";
 

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Header from "../Header/Header";
 import { MDBDataTable } from 'mdbreact';
-import logo from '../../asserts/img/bitcoin.png';
 
 class ManageLands extends Component {
 

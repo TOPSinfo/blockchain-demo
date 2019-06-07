@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import History from './history';
-import { Router,Route,Switch,Redirect } from 'react-router-dom';
+import { Router,Route,Switch } from 'react-router-dom';
 import Home from './components/Home/Home';
 import LoginForm from './components/LoginForm/LoginForm';
 import TransferLand from './components/TransferLand/TransferLand';

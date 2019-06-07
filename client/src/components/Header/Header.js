@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
 import logo from '../../asserts/img/logo.png';
-import { connect } from 'react-redux';
 import {withRouter} from 'react-router-dom';
 
 class Header extends Component {

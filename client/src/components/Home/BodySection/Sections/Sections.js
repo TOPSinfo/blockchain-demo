@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import logo_b1 from '../../../../asserts/img/s1.png';
-import logo_b4 from '../../../../asserts/img/b4.jpg';
 import logo_b2 from '../../../../asserts/img/s3.png';
 import logo_b3 from '../../../../asserts/img/s2.png';
-import logo_b5 from '../../../../asserts/img/b5.jpg';
-import logo_b6 from '../../../../asserts/img/b6.jpg';
 
 import {withRouter} from 'react-router-dom';
 class Sections extends Component {
@@ -24,7 +21,7 @@ class Sections extends Component {
 									<img className="img-fluid" src={logo_b1} alt=""/>
 								</div>
 								<div className="desc">
-									<a><h4>Transfer Owned Land</h4></a>
+									<h4>Transfer Owned Land</h4>
 									<p>
 										Here You can transfer land owned by you to any of the member of blockchain.
 									</p>
@@ -36,7 +33,7 @@ class Sections extends Component {
 									<img className="img-fluid" src={logo_b2} alt=""/>
 								</div>
 								<div className="desc">
-									<a><h4>View and Create New Lands</h4></a>
+									<h4>View and Create New Lands</h4>
 									<p>
 										Here you can Create new Lands, and Manage the Lands owned by you.
 									</p>
@@ -48,7 +45,7 @@ class Sections extends Component {
 									<img className="img-fluid" src={logo_b3} alt=""/>
 								</div>
 								<div className="desc">
-									<a><h4>Create and Manage User</h4></a>
+									<h4>Create and Manage User</h4>
 									<p>
 										Here you can create and manage the users of the blockchain.
 									</p>

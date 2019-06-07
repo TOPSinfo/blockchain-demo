@@ -48,7 +48,7 @@ class TransferLand extends Component {
 								</select>
 							</div>
 						</div>
-                            <a href="#" className="primary-btn header-btn text-uppercase mb-20">Transfer Land</a>
+                        <h1>Transfer Land</h1>
                     </div>
                 </div>
             </div>
