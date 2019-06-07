@@ -37,8 +37,8 @@ class TransferLand extends Component {
                     </div>
                     <div className="col-lg-6 cols">
                         <input type="text" name="feet" placeholder="Username" className="form-control mb-20"/>
-                        <div class="single-element-widget mt-30">
-							<div class="default-select" id="default-select">
+                        <div className="single-element-widget mt-30">
+							<div className="default-select" id="default-select">
 								<select>
 									<option value="1">English</option>
 									<option value="1">Spanish</option>
