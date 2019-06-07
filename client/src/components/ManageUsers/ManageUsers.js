@@ -1,13 +1,16 @@
 import React, { Component } from "react";
 import Header from "../Header/Header";
 import { MDBDataTable } from 'mdbreact';
-
-
+import {Modal} from "react-bootstrap";
+import { connect } from 'react-redux';
+import {withRouter} from 'react-router-dom'
+import {landManagment}  from "../../actions"
 class ManageUsers extends Component {
 
     constructor(props){
         super(props);
          this.state = {
+             showAddUserModal:false,
              data : {
               columns: [
                 {
@@ -509,6 +512,13 @@ class ManageUsers extends Component {
         }
     }
 
+    toogleAddUserModal = () => {
+      this.setState({showAddUserModal:!this.state.showAddUserModal})
+    }
+
+    handleAddUser = () => {
+      this.props.createUserAccount(this.props.web3, this.props.contract)
+    }
     render() {
         return (
             <React.Fragment>
@@ -537,6 +547,7 @@ class ManageUsers extends Component {
             <div className="row justify-content-center align-items-center flex-column pb-30">
                     <h1 className="text-white">Manage Users</h1>
                     <p className="text-white">Here you can create and manage the users of the blockchain.</p>
+                    <a onClick={this.toogleAddUserModal} className="primary-btn header-btn text-uppercase mb-20">Add User</a>
                 </div>
               <MDBDataTable
                 striped
@@ -550,11 +561,28 @@ class ManageUsers extends Component {
     </section>
 
 
+    <Modal show={this.state.showAddUserModal} onHide={this.toogleAddUserModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add User</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+          <div className="col-lg-6 cols">
+            <input type="text" name="feet" placeholder="Username" className="form-control mb-20"/>
+            <input type="password" name="feet" placeholder="Password" className="form-control mb-20"/>
+            <a onClick={this.handleAddUser} className="primary-btn header-btn text-uppercase mb-20 login-button">Add User</a>
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+
+          </Modal.Footer>
+        </Modal>
             </React.Fragment>
         );
     }
 }
 
-export default ManageUsers;
+export default  withRouter ( connect(null,{
+  createUserAccount:landManagment.createUserAccount
+})(ManageUsers));
 
 

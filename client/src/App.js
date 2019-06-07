@@ -19,7 +19,7 @@ class App extends Component {
         deployedNetwork && deployedNetwork.address,
       );
 
-      this.setState({ web3, accounts, contract: instance }, this.runExample);
+      this.setState({ web3, contract: instance });
     } catch (error) {
       // alert(
       //   `Failed to load web3, accounts, or contract. Check console for details.`,
@@ -41,7 +41,7 @@ class App extends Component {
       return <div>Loading ...</div>;
     }
     return (
-      <Routes/>
+      <Routes web3={this.state.web3} contract={this.state.contract}/>
     );
   }
 }
