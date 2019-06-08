@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import Header from "../Header/Header";
 import { MDBDataTable } from 'mdbreact';
-import {Modal, Table} from "react-bootstrap";
+
+import {Modal, Table, Alert} from "react-bootstrap";
 import { connect } from 'react-redux';
 import {withRouter} from 'react-router-dom'
 import {landManagment}  from "../../actions"
@@ -11,7 +12,8 @@ class ManageLands extends Component {
     constructor(props){
         super(props);
         this.state = {
-          showAddLandsModal:false
+          showAddLandsModal:false,
+          submitted: false
         }
     }
 
@@ -23,16 +25,27 @@ class ManageLands extends Component {
       this.setState({[e.target.id]:e.target.value})
     }
     handleAddLand = () =>{
-      var data={
-        landName:this.state.landName,
-        web3:this.props.web3,
-        contract:this.props.contract
-      }
-      // this.props.createLand(data);
-      this.toogleAddLandModal()
+      this.setState({ submitted: true });
+      const { landName } = this.state;
+      if(landName){
+        if(landName.trim() !== ''){
+            var data={
+              landName:this.state.landName,
+              web3:this.props.web3,
+              contract:this.props.contract
+            }
+            // this.props.createLand(data);
+               this.toogleAddLandModal()
+               console.log(data)
+          }
+        }
+      
+      
 
     }
     render() {
+      const { landName, submitted} = this.state; 
+      console.log("submitted...................",submitted,"landName",landName)
         return (
             <React.Fragment>
                 <Header />
@@ -62,7 +75,7 @@ class ManageLands extends Component {
                     <p className="text-white">Here you can Create new Lands, and Manage the Lands owned by you.</p>
                     <a onClick={this.toogleAddLandModal} className="primary-btn header-btn text-uppercase mb-20">Add Land</a>
                 </div>
-            <Table className="white-color" striped bordered hover>
+            {/* <Table className="white-color" striped bordered hover>
             <thead>
               <tr>
                 <th >#</th>
@@ -80,8 +93,8 @@ class ManageLands extends Component {
                   </tr>)
                 }
               })} */}
-            </tbody>
-          </Table>
+            {/* </tbody>
+          </Table> */} */}
             </div>
         </div>
     </section>
@@ -92,6 +105,14 @@ class ManageLands extends Component {
           <Modal.Body>
             <div className="col-lg-6 cols">
               <input type="text" onChange={this.handleOnChangeInput}  id="landName" placeholder="Land Name" className="form-control mb-20"/>
+              {
+                (submitted && !landName) ? 
+                  (<Alert variant='warning'>Landname is required</Alert>) :
+
+                  (submitted && landName.trim().length === 0) ?
+                          ( <Alert variant= 'warning'>Warning no leading whitespace</Alert> ) : null
+                                          
+              }              
               <a onClick={this.handleAddLand} className="primary-btn header-btn text-uppercase mb-20 login-button">Submit</a>
             </div>
 
