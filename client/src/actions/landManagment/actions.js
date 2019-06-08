@@ -30,13 +30,11 @@ export const createLand = (data) => {
     const {web3, contract, landName} = data;
 
     // var createLand = contract.methods.createLand()
-
-
-    return{ type: t.CREATE_ACCOUNT, payload: {}};
+    return{ type: t.CREATE_LAND, payload: {}};
 };
 
 export const getAllLands = (data) => {
     const {contract} = data;
     var allAccounts = contract.methods.getAllUsers().call();
-    return{ type: t.GET_USERS, payload: allAccounts};
+    return{ type: t.GET_LANDS, payload: allAccounts};
 }

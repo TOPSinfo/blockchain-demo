@@ -11,7 +11,7 @@ class App extends Component {
     try {
       const web3 = await getWeb3();
       const accounts = await web3.eth.getAccounts();
-
+      console.log("accounts[0]",accounts[0])
       const networkId = await web3.eth.net.getId();
       const deployedNetwork = LandManagment.networks[networkId];
       const instance = new web3.eth.Contract(
