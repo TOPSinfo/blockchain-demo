@@ -1,4 +1,6 @@
       pragma solidity ^0.5.0;
+      pragma experimental ABIEncoderV2;
+
 
 
       contract LandManagment{
@@ -32,15 +34,16 @@
               totalUsers = totalUsers +1;
           }
 
-          function getAllUsers() public returns(address[] memory){
+          function getAllUsers() public returns(address[] memory, string[] memory){
               address[] memory allAddress = new address[](totalUsers);
-
+              string[] memory allUsernames = new string[](totalUsers);
               for(uint x=0; x < totalUsers; x++){
                   if(users[x].isAdmin == false){
                     allAddress[x] = users[x].userid;
+                    allUsernames[x] = users[x].username;
                   }
               }
-              return allAddress;
+              return (allAddress,allUsernames);
 
           }
 
