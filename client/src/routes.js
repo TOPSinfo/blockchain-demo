@@ -28,7 +28,7 @@ class Routes extends Component {
             render={ ()=>(<TransferLand />) }>
           </Route>
           <Route exact path='/lands'
-            render={ ()=>(<ManageLands />) }>
+            render={ ()=>(<ManageLands web3={this.props.web3} contract={this.props.contract}/>) }>
           </Route>
           <Route exact path='/users'
             render={ ()=>(<ManageUsers web3={this.props.web3} contract={this.props.contract} />) }>

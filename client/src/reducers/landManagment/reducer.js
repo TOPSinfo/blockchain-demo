@@ -1,28 +1,31 @@
-import t from '../../actions/auth/types';
+import t from '../../actions/landManagment/types';
 
 export default function(
   state = {
-    isAuthenticated: false,
-    web3:null,
-    accounts:null,
-    contract:null
+    newAccountId:null,
+    allAccounts:null,
+    newAccountReciept:null,
+    newUserAdded:false
   },
   action
 ) {
   switch (action.type) {
 
-    case  t.SET_WEB3_INSTANCE:
+    case  t.CREATE_ACCOUNT:
+
       if (action.payload) {
-        state.web3 = action.payload.web3;
-        state.accounts = action.payload.accounts;
-        state.contract = action.payload.contract;
+        state.newUserAdded = true;
+        state.newAccountId = action.payload.newAccount;
+        state.newAccountReciept = action.payload.reciept;
       }
       return { ...state };
 
-    case t.CHECK_AUTH:
-      state.isAuthenticated = true;
-      return { ...state };
-
+    case t.GET_USERS:
+      if(action.payload){
+          state.newUserAdded = false;
+          state.allAccounts = action.payload;
+      }
+      return {...state};
     default:
       return state;
   }

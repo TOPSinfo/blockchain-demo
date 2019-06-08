@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import SimpleStorageContract from "./contracts/SimpleStorage.json";
+import LandManagment from "./contracts/LandManagment.json";
 import getWeb3 from "./utils/getWeb3";
 import Routes from './routes'
 import "./App.css";
@@ -13,9 +13,9 @@ class App extends Component {
       const accounts = await web3.eth.getAccounts();
 
       const networkId = await web3.eth.net.getId();
-      const deployedNetwork = SimpleStorageContract.networks[networkId];
+      const deployedNetwork = LandManagment.networks[networkId];
       const instance = new web3.eth.Contract(
-        SimpleStorageContract.abi,
+        LandManagment.abi,
         deployedNetwork && deployedNetwork.address,
       );
 
