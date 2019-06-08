@@ -1,6 +1,6 @@
-  import React, { Component } from "react";
+import React, { Component } from "react";
 import Header from "../Header/Header";
-
+import { Alert } from 'react-bootstrap';
 import {Modal, Table} from "react-bootstrap";
 import { connect } from 'react-redux';
 import {withRouter} from 'react-router-dom'
@@ -12,7 +12,8 @@ class ManageUsers extends Component {
         super(props);
          this.state = {
             showAddUserModal:false,
-            userData:[]
+            userData:[],
+            submitted: false
         }
     }
 
@@ -57,21 +58,35 @@ class ManageUsers extends Component {
     }
 
     handleAddUser = () => {
-      var data={
-        username:this.state.username,
-        password:this.state.password,
-        web3:this.props.web3,
-        contract:this.props.contract
+      this.setState({ submitted: true });
+      const { username, password } = this.state;
+      if(username && password){
+        if(username.trim() !== ''){
+          var data={
+            username:this.state.username.trim(),
+            password:this.state.password,
+            web3:this.props.web3,
+            contract:this.props.contract
+          }
+          console.log(data)
+          // this.props.createUserAccount(data);
+          // this.toogleAddUserModal()
+           
+        }
+        
       }
-      this.props.createUserAccount(data);
-      this.toogleAddUserModal()
+      
+      
     }
+
 
     handleOnChangeInput = (e) => {
       this.setState({[e.target.id]:e.target.value})
     }
     render() {
-
+      const { username, password, submitted } = this.state;
+      console.log("submitted...................",submitted,"username",username)
+      // console.log("username.trim().length === 0",username.trim().length === 0)
         return (
             <React.Fragment>
                 <Header />
@@ -134,7 +149,20 @@ class ManageUsers extends Component {
           <Modal.Body>
             <div className="col-lg-6 cols">
               <input type="text" onChange={this.handleOnChangeInput}  id="username" placeholder="Username" className="form-control mb-20"/>
+              {
+                (submitted && !username) ? 
+                  (<Alert variant='warning'>Username is required</Alert>) :
+
+                  (submitted && username.trim().length === 0) ?
+                          ( <Alert variant= 'warning'>
+                          Warning no leading whitespace
+                          </Alert> ) : null
+                                          
+              }
               <input type="password" onChange={this.handleOnChangeInput} id="password" placeholder="Password" className="form-control mb-20"/>
+              {submitted && !password &&
+                            <Alert variant= 'warning'>Password is required</Alert>
+              }
               <a onClick={this.handleAddUser} className="primary-btn header-btn text-uppercase mb-20 login-button">Submit</a>
             </div>
 
