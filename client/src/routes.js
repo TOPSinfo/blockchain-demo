@@ -22,7 +22,7 @@ class Routes extends Component {
             render={ ()=>(<Home/>) }>
         </Route>
          <Route exact path='/login'
-            render={ ()=>(<Login />) }>
+            render={ ()=>(<Login web3={this.props.web3} contract={this.props.contract}/>) }>
           </Route>
           <Route exact path='/transfer-land'
             render={ ()=>(<TransferLand />) }>

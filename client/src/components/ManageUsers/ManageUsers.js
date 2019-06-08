@@ -29,7 +29,7 @@ class ManageUsers extends Component {
     }
 
     componentWillReceiveProps = (nextProps) =>{
-
+      
       if(nextProps.landManagment.newUserAdded){
         this.getAllUsers()
       }
