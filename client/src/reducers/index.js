@@ -1,8 +1,16 @@
 import { combineReducers } from 'redux';
-import authReducer from './auth/reducer';
+
+import authReducer from "./auth/authReducer";
+import errorReducer from "./auth/errorReducer";
+
+
+// import authReducer from './auth/reducer';
 import landManagmentReducer from './landManagment/reducer'
 
 export default combineReducers({
   auth: authReducer,
+  errors: errorReducer,
   landManagment:landManagmentReducer
 });
+
+
