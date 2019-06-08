@@ -14,6 +14,7 @@ export default function(
     case  t.CREATE_ACCOUNT:
 
       if (action.payload) {
+        console.log(action.payload)
         state.newUserAdded = true;
         state.newAccountId = action.payload.newAccount;
         state.newAccountReciept = action.payload.reciept;

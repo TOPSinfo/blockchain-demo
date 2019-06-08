@@ -31,7 +31,6 @@ export const createLand = (data) => {
 
     // var createLand = contract.methods.createLand()
 
-
     return{ type: t.CREATE_ACCOUNT, payload: {}};
 };
 

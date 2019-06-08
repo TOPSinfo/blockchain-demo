@@ -29,9 +29,10 @@ class ManageUsers extends Component {
 
     componentWillReceiveProps = (nextProps) =>{
 
-      if(nextProps.landManagment.newUserAdded){
-        this.getAllUsers()
-      }
+      console.log(nextProps.landManagment.newAccountReciept)
+      // if(nextProps.landManagment.newUserAdded){
+      //   this.getAllUsers()
+      // }
 
       var userData = [];
       var {allAccounts} = nextProps.landManagment;
