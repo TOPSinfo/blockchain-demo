@@ -76,4 +76,18 @@
               lands[landId].ownerAddress = userAddress;
           }
 
+          function checkIfUserExists(string memory username,string memory password) public returns(bool){
+              for(uint o=0; o<totalUsers; o++){
+                  if(keccak256(abi.encodePacked(users[o].username)) == keccak256(abi.encodePacked(username))){
+                    if(keccak256(abi.encodePacked(users[o].password)) == keccak256(abi.encodePacked(password))){
+                          return true;
+                      }else{
+                          return false;
+                      }
+                  }else{
+                      return false;
+                  }
+              }
+          }
+
       }

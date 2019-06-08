@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {withRouter} from 'react-router-dom'
-import {authActions}  from "../../actions"
+import {auth}  from "../../actions"
 import './login.css';
 import logo from '../../asserts/img/bitcoin.png';
 
@@ -10,36 +10,25 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userInputValue: "",
-            pwdInputValue: "",
-            title: "login Page"
         };
-        this.handleUserinputs = this.handleUserinputs.bind(this);
-        this.handlePwdinputs = this.handlePwdinputs.bind(this);
     }
 
-    onSubmits(e, obj) {
-        e.preventDefault()
-        console.log("obj..........",obj.user)
-        this.props.setUserId(obj.user)
-        if (obj) {
-            // this.props.history.push({ pathname: "/Profile" })
+    handleOnChangeInput = (e) => {
+        this.setState({[e.target.id]:e.target.value})
+    }
+
+    handleLoginSubmit = () =>{
+        var data={
+            username:this.state.username,
+            password:this.state.password,
+            web3:this.props.web3,
+            contract:this.props.contract
         }
+        this.props.loginUser(data);
     }
 
-    handleUserinputs(e) {
-        e.preventDefault()
-        this.setState({
-            userInputValue: e.target.value,
-        })
-    }
 
-    handlePwdinputs(e) {
-        e.preventDefault()
-        this.setState({
-            pwdInputValue: e.target.value,
-        })
-    }
+
     render() {
         return (
         <React.Fragment>
@@ -71,9 +60,9 @@ class Login extends Component {
                         <img className="d-block mx-auto" src={logo} alt=""/>
                     </div>
                     <div className="col-lg-4 cols">
-                        <input type="text" name="feet" placeholder="Username" className="form-control mb-20"/>
-                        <input type="text" name="feet" placeholder="Password" className="form-control mb-20"/>
-                            <a className="primary-btn header-btn text-uppercase mb-20 login-button">Login</a>
+                        <input onChange={this.handleOnChangeInput} id="username" type="text" placeholder="Username" className="form-control mb-20"/>
+                        <input onChange={this.handleOnChangeInput} id="password" type="password" placeholder="Password" className="form-control mb-20"/>
+                        <a onClick={this.handleLoginSubmit} className="primary-btn header-btn text-uppercase mb-20 login-button">Login</a>
                     </div>
                 </div>
             </div>
@@ -85,6 +74,6 @@ class Login extends Component {
 }
 
 export default  withRouter ( connect(null,{
-    setUserId:authActions.setUserId
+    loginUser : auth.loginUser
 })(Login));
 

@@ -1,8 +1,20 @@
 import t from './types';
 
-export const checkAuthentication = (payload) => {
-  return{ type: t.CHECK_AUTH, payload: payload };
+
+
+export const loginUser = (data) => {
+  const {username, password, contract} = data;
+  console.log(contract)
+  var checkIfUserExists = contract.methods.checkIfUserExists(username,password).call();
+  checkIfUserExists.then((data)=>{
+    alert(data)
+  }).catch((err)=>{
+    console.log(err)
+  })
+
+  return{ type: t.CHECK_AUTH, payload: {} };
 };
+
 
 export const setUserId = (payload) => {
   return{ type: t.SET_USER_ID, payload: payload };
