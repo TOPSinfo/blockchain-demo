@@ -53,7 +53,6 @@ class Login extends Component {
 
   render() {
     const { errors } = this.state;
-
     return (
       <div className="container">
         <div style={{ marginTop: "4rem" }} className="row">
@@ -144,5 +143,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { loginUser }
+  { loginUser:loginUser.loginUser }
 )(withRouter(Login));

@@ -2,26 +2,27 @@ import axios from "axios";
 import setAuthToken from '../../utils/setAuthToken';
 import jwt_decode from "jwt-decode";
 import t from './types';
+const url ="http://localhost:5000";
 
 // Register User
-export const registerUser = (userData, history) => {
+export const registerUser = (userData, history) => dispatch => {
   axios
-    .post("/api/users/register", userData)
+    .post(url+"/api/users/register", userData)
     .then(res => history.push("/login"))
-    .catch(err =>
-      {
-        return{ type: t.GET_ERRORS, payload: err.response.data }
-      }
+    .catch(err =>  
+        dispatch({
+          type: t.GET_ERRORS,
+          payload: err.response.data
+        })
     );
 };
 
 // Login - get user token
-export const loginUser = userData => {
+export const loginUser = userData => dispatch => {
   axios
-    .post("/api/users/login", userData)
+    .post(url+"/api/users/login", userData)
     .then(res => {
       // Save to localStorage
-
       // Set token to localStorage
       const { token } = res.data;
       localStorage.setItem("jwtToken", token);
@@ -30,11 +31,14 @@ export const loginUser = userData => {
       // Decode token to get user data
       const decoded = jwt_decode(token);
       // Set current user
-      return(setCurrentUser(decoded));
+      dispatch(setCurrentUser(decoded));
     })
-    .catch(err =>{
-      return{ type: t.GET_ERRORS, payload: err.response.data }
-    });
+    .catch(err =>
+      dispatch({
+        type: t.GET_ERRORS,
+        payload: err.response.data
+      })
+    );
 };
 
 // Set logged in user
@@ -48,11 +52,11 @@ export const setUserLoading = () => {
 };
 
 // Log user out
-export const logoutUser = () => {
+export const logoutUser = () =>  dispatch =>{
   // Remove token from local storage
   localStorage.removeItem("jwtToken");
   // Remove auth header for future requests
   setAuthToken(false);
   // Set current user to empty object {} which will set isAuthenticated to false
-  return(setCurrentUser({}));
+  dispatch(setCurrentUser({}));
 };

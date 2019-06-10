@@ -46,7 +46,7 @@ class Register extends Component {
       password2: this.state.password2
     };
 
-    this.props.loginUser(newUser, this.props.history);
+    this.props.registerUser(newUser, this.props.history);
   };
 
   render() {
@@ -148,7 +148,7 @@ class Register extends Component {
 }
 
 Register.propTypes = {
-  loginUser: PropTypes.func.isRequired,
+  registerUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
@@ -160,5 +160,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { loginUser }
+  { registerUser:loginUser.registerUser }
 )(withRouter(Register));

@@ -36,7 +36,6 @@ class ManageLands extends Component {
             }
             // this.props.createLand(data);
                this.toogleAddLandModal()
-               console.log(data)
           }
         }
       
@@ -45,7 +44,6 @@ class ManageLands extends Component {
     }
     render() {
       const { landName, submitted} = this.state; 
-      console.log("submitted...................",submitted,"landName",landName)
         return (
             <React.Fragment>
                 <Header />
