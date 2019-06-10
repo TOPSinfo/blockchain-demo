@@ -68,6 +68,7 @@ class ManageUsers extends Component {
             web3:this.props.web3,
             contract:this.props.contract
           }
+          console.log(data)
           this.props.createUserAccount(data);
           this.toogleAddUserModal()
            
@@ -84,6 +85,8 @@ class ManageUsers extends Component {
     }
     render() {
       const { username, password, submitted } = this.state;
+      console.log("submitted...................",submitted,"username",username)
+      // console.log("username.trim().length === 0",username.trim().length === 0)
         return (
             <React.Fragment>
                 <Header />
