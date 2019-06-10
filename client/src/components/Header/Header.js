@@ -24,7 +24,7 @@ class Header extends Component {
                     <li><a onClick={(e)=> this.handleComponentChange(e,"/lands")}>View and Create</a></li>
                     <li><a onClick={(e)=> this.handleComponentChange(e,"/users")}>Users</a></li>
                     <li><a onClick={(e)=> this.handleComponentChange(e,"/about")}>About</a></li>
-                    <li><a onClick={(e)=> this.handleComponentChange(e,"/login")}>Log out</a></li>
+                    <li><a onClick={(e)=> this.handleComponentChange(e,"/login")}>Log In</a></li>
                     </ul>
                 </nav>
                 </div>
