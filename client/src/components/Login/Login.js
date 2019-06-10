@@ -30,6 +30,7 @@ class Login1 extends Component {
 
 
     render() {
+        
         return (
         <React.Fragment>
             <section className="banner-area relative" id="home">
