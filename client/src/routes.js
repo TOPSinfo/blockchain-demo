@@ -45,7 +45,6 @@ class Routes extends Component {
              web3={this.props.web3} contract={this.props.contract}> 
           </PrivateRoute>
           
-          
       </Switch>
     </Router>
     );
@@ -53,48 +52,3 @@ class Routes extends Component {
 }
 
 export default(Routes);
-
-
-
-{/* <Provider store={store}>
-<Router>
-  <div className="App">
-    <Navbar />
-    <Route exact path="/" component={Landing} />
-    <Route exact path="/register" component={Register} />
-    <Route exact path="/login" component={Login} />
-    <Switch>
-      <PrivateRoute exact path="/dashboard" component={Dashboard} />
-    </Switch>
-  </div>
-</Router>
-</Provider> */}
-
-
-// import React from "react";
-// import { Route, Redirect } from "react-router-dom";
-// import { connect } from "react-redux";
-// import PropTypes from "prop-types";
-
-// const PrivateRoute = ({ component: Component, auth, ...rest }) => (
-//   <Route
-//     {...rest}
-//     render={props =>
-//       auth.isAuthenticated === true ? (
-//         <Component {...props} />
-//       ) : (
-//         <Redirect to="/login" />
-//       )
-//     }
-//   />
-// );
-
-// PrivateRoute.propTypes = {
-//   auth: PropTypes.object.isRequired
-// };
-
-// const mapStateToProps = state => ({
-//   auth: state.auth
-// });
-
-// export default connect(mapStateToProps)(PrivateRoute);

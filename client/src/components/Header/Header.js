@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { loginUser } from "../../actions/index";
+import PropTypes from "prop-types";
 
 import logo from '../../asserts/img/logo.png';
 import {withRouter} from 'react-router-dom';
@@ -9,7 +12,14 @@ class Header extends Component {
         this.props.history.push({pathname:pathName})
     }
 
+    onLogoutClick = e => {
+        e.preventDefault();
+        console.log("called")
+        this.props.logoutUser();
+      };
+
     render() {
+        const {isAuthenticated }=this.props.auth 
         return (
             <header id="header" className="header-top">
             <div className="container">
@@ -24,7 +34,13 @@ class Header extends Component {
                     <li><a onClick={(e)=> this.handleComponentChange(e,"/lands")}>View and Create</a></li>
                     <li><a onClick={(e)=> this.handleComponentChange(e,"/users")}>Users</a></li>
                     <li><a onClick={(e)=> this.handleComponentChange(e,"/about")}>About</a></li>
-                    <li><a onClick={(e)=> this.handleComponentChange(e,"/login")}>Log In</a></li>
+                    {
+                        isAuthenticated ?
+                            <li><a onClick={(e)=> 
+                                this.onLogoutClick(e)}>Log Out</a></li> 
+                            :<li><a onClick={(e)=> this.handleComponentChange(e,"/login")}>Log In</a></li>
+                    }
+                    
                     </ul>
                 </nav>
                 </div>
@@ -34,4 +50,19 @@ class Header extends Component {
     }
 }
 
-export default withRouter (Header);
+Header.propTypes = {
+    logoutUser: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired
+  };
+
+const mapStateToProps = state => ({
+    auth: state.auth
+  });
+  
+  export default connect(
+    mapStateToProps,{
+        logoutUser:loginUser.logoutUser
+    }
+  )(withRouter(Header));
+  
+  
