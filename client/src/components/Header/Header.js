@@ -30,15 +30,18 @@ class Header extends Component {
                 <nav id="nav-menu-container">
                     <ul className="nav-menu">
                     <li><a onClick={(e)=> this.handleComponentChange(e,"/")}>Home</a></li>
-                    <li><a onClick={(e)=> this.handleComponentChange(e,"/transfer-land")}>Transfer</a></li>
-                    <li><a onClick={(e)=> this.handleComponentChange(e,"/lands")}>View and Create</a></li>
-                    <li><a onClick={(e)=> this.handleComponentChange(e,"/users")}>Users</a></li>
                     <li><a onClick={(e)=> this.handleComponentChange(e,"/about")}>About</a></li>
                     {
                         isAuthenticated ?
-                            <li><a onClick={(e)=> 
-                                this.onLogoutClick(e)}>Log Out</a></li> 
-                            :<li><a onClick={(e)=> this.handleComponentChange(e,"/login")}>Log In</a></li>
+                            (<React.Fragment>
+                                <li><a onClick={(e)=> this.handleComponentChange(e,"/transfer-land")}>Transfer</a></li>
+                                <li><a onClick={(e)=> this.handleComponentChange(e,"/lands")}>View and Create</a></li>
+                                    <li><a onClick={(e)=> this.handleComponentChange(e,"/users")}>Users</a></li>
+                                        <li><a onClick={(e)=> this.onLogoutClick(e)}>Log Out</a></li>
+                            </React.Fragment>
+                             ) 
+                            :
+                            (<li><a onClick={(e)=> this.handleComponentChange(e,"/login")}>Log In</a></li>)
                     }
                     
                     </ul>
