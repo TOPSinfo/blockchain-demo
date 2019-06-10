@@ -3,6 +3,7 @@ import History from './history';
 import { Router,Route,Switch } from 'react-router-dom';
 import Home from './components/Home/Home';
 import Login from './components/Auth/Login';
+// import Login1 from './components/Login/Login';
 import TransferLand from './components/TransferLand/TransferLand';
 import ManageLands from './components/ManageLands/ManageLands';
 import ManageUsers from './components/ManageUsers/ManageUsers';
@@ -34,6 +35,10 @@ class Routes extends Component {
           <Route exact path='/register'
             render={ ()=>(<Register />) }>
           </Route>
+
+          {/* <Route exact path='/register'
+            render={ ()=>(<Login1 />) }>
+          </Route> */}
 
           <PrivateRoute exact path='/transfer-land'
             component = {TransferLand} >
