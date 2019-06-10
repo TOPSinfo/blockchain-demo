@@ -5,7 +5,7 @@ import {auth}  from "../../actions"
 import './login.css';
 import logo from '../../asserts/img/bitcoin.png';
 
-class Login extends Component {
+class Login1 extends Component {
 
     constructor(props) {
         super(props);
@@ -30,6 +30,7 @@ class Login extends Component {
 
 
     render() {
+        
         return (
         <React.Fragment>
             <section className="banner-area relative" id="home">
@@ -75,5 +76,5 @@ class Login extends Component {
 
 export default  withRouter ( connect(null,{
     loginUser : auth.loginUser
-})(Login));
+})(Login1));
 
