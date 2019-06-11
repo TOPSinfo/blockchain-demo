@@ -1,6 +1,7 @@
 import t from './types';
 import config from '../../config/accounts';
 
+
 export const createUserAccount = (data) => {
     const {web3, contract, username, password} = data;
     var newAccount = web3.eth.personal.newAccount(password);
@@ -27,10 +28,11 @@ export const getAllUsers = (data) => {
 }
 
 export const createLand = (data) => {
-    // const {web3, contract, landName} = data;
+    const {web3, contract} = data;
 
-    // var createLand = contract.methods.createLand()
-    return{ type: t.CREATE_LAND, payload: {}};
+
+
+    // return{ type: t.CREATE_LAND, payload: {}};
 };
 
 export const getAllLands = (data) => {
