@@ -163,10 +163,13 @@ class ManageUsers extends Component {
                           </Alert> ) : null
                                           
               }
+              <input type="email" onChange={this.handleOnChangeInput} id="email" placeholder="Email" className="form-control mb-20" required/>
               <input type="password" onChange={this.handleOnChangeInput} id="password" placeholder="Password" className="form-control mb-20"/>
               {submitted && !password &&
                             <Alert variant= 'warning'>Password is required</Alert>
               }
+              <input type="password" onChange={this.handleOnChangeInput} id="password2" placeholder="Confirm Password" className="form-control mb-20" required/>
+              
               <a onClick={this.handleAddUser} className="primary-btn header-btn text-uppercase mb-20 login-button">Submit</a>
             </div>
 

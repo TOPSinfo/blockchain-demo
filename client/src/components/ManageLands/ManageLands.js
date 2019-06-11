@@ -92,7 +92,7 @@ class ManageLands extends Component {
                 }
               })} */}
             {/* </tbody>
-          </Table> */} */}
+          </Table> */} 
             </div>
         </div>
     </section>
