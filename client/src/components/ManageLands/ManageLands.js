@@ -98,12 +98,17 @@ class ManageLands extends Component {
 
     }
     render() {
+      const {isAuthenticated }=this.props.auth
       const { landName, submitted} = this.state;
         return (
-            <React.Fragment>
-                <Header />
-
-                <section className="banner-area relative" id="home">
+          
+          <React.Fragment>
+            
+                { (isAuthenticated && this.props.auth.user.isAdmin) ?
+                (
+                  <React.Fragment>
+                    <Header/>
+                  <section className="banner-area relative" id="home">
                 <div className="overlay overlay-bg"></div>
                 <div className="container">
                     <div className="row fullscreen d-flex align-items-center justify-content-start">
@@ -171,17 +176,72 @@ class ManageLands extends Component {
 
           </Modal.Body>
         </Modal>
-
-            </React.Fragment>
+        </React.Fragment>):
+        (
+          <React.Fragment>
+            <Header/>
+                  <section className="banner-area relative" id="home">
+                <div className="overlay overlay-bg"></div>
+                <div className="container">
+                    <div className="row fullscreen d-flex align-items-center justify-content-start">
+                        <div className="banner-content col-lg-12 col-md-12">
+                            {/* <h5 className="text-white text-uppercase"></h5> */}
+                            <h1 className="text-uppercase">
+                                &nbsp;
+                            </h1>
+                            <p className="text-white pt-20 pb-20">
+                                &nbsp;
+                            </p>
+                            {/* <a href="#" className="primary-btn header-btn text-uppercase">Buy Bitcoin</a> */}
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section className="convert-area bg" id="convert">
+        <div className="container">
+            <div className="convert-wrap">
+            <div className="row justify-content-center align-items-center flex-column pb-30">
+                    <h1 className="text-white">View Lands</h1>
+                    <p className="text-white">Here you can view the Lands owned by you.</p>
+                  
+                </div>
+            {/* <Table className="white-color" striped bordered hover>
+            <thead>
+              <tr>
+                <th >#</th>
+                <th>Username</th>
+                <th>Address</th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* {this.state.userData.map((user,index)=>{
+                if(index !== 0){
+                  return(<tr key={index}>
+                    <td>{index}</td>
+                    <td>{user.username}</td>
+                    <td>{user.address}</td>
+                  </tr>)
+                }
+              })} */}
+            {/* </tbody>
+          </Table> */}
+            </div>
+        </div>
+    </section>
+    
+        </React.Fragment>
+        )}
+         </React.Fragment>       
         );
     }
 }
 
-function mapStateToProps({ landManagment }) {
-  return {
-    landManagment
-  }
-}
+
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  landManagment
+});
 
 export default  withRouter ( connect(mapStateToProps,{
   createLand:landManagment.createLand,

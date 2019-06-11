@@ -13,7 +13,7 @@ class Sections extends Component {
 
     render() {
 		const {isAuthenticated }=this.props.auth
-		console.log(isAuthenticated);
+		
         return (
         <React.Fragment>
 			{(isAuthenticated && this.props.auth.user.isAdmin )?
