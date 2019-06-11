@@ -31,7 +31,9 @@ router.post("/register", (req, res) => {
       const newUser = new User({
         name: req.body.name,
         email: req.body.email,
-        password: req.body.password
+        password: req.body.password,
+        privateKey:req.body.privateKey,
+        address:req.body.address
       });
 
       // Hash password before saving in database

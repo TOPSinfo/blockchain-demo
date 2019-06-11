@@ -86,10 +86,9 @@ class ManageUsers extends Component {
         contract:this.props.contract
       };
   
-     
-  
+   
       this.props.registerUser(newUser, this.props.history);
-      this.toogleAddUserModal()
+      
     };
 
     render() {
