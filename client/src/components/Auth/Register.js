@@ -15,7 +15,7 @@ class Register extends Component {
       password: "",
       password2: "",
       errors: {}
-    };  
+    };
   }
 
   componentDidMount() {
@@ -47,7 +47,12 @@ class Register extends Component {
       password2: this.state.password2
     };
 
-    this.props.registerUser(newUser, this.props.history);
+    var data={
+      web3 :this.props.web3,
+      contract:this.props.contract
+    }
+
+    this.props.registerUser(newUser, this.props.history,data);
   };
 
   render() {
@@ -104,7 +109,7 @@ class Register extends Component {
                     </div>
                 </section>
         </React.Fragment>
-     
+
     );
   }
 }

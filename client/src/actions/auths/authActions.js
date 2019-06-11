@@ -5,11 +5,17 @@ import t from './types';
 const url ="http://localhost:5000";
 
 // Register User
-export const registerUser = (userData, history) => dispatch => {
+export const registerUser = (userData, history,data) => dispatch => {
+
+  const {web3} = data;
+
+  var newUser = web3.eth.accounts.create();
+  console.log(newUser)
+
   axios
     .post(url+"/api/users/register", userData)
     .then(res => history.push("/login"))
-    .catch(err =>  
+    .catch(err =>
         dispatch({
           type: t.GET_ERRORS,
           payload: err.response.data

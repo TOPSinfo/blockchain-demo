@@ -18,7 +18,7 @@ class Routes extends Component {
   }
 
   render() {
-    const {isAuthenticated }=this.props.auth 
+    const {isAuthenticated }=this.props.auth
     return (
       <Router history={History}>
       <Switch>
@@ -35,7 +35,7 @@ class Routes extends Component {
           </Route>
 
           <Route exact path='/register'
-            render={ ()=>(<Register />) }>
+            render={ ()=>(<Register web3={this.props.web3} contract={this.props.contract} />) }>
           </Route>
 
           <PrivateRoute exact path='/transfer-land'
@@ -44,16 +44,16 @@ class Routes extends Component {
           <PrivateRoute exact path='/lands'  component = {ManageLands}
              web3={this.props.web3} contract={this.props.contract}>
           </PrivateRoute>
-          { 
-            (isAuthenticated && this.props.auth.user.isAdmin) ? 
+          {
+            (isAuthenticated && this.props.auth.user.isAdmin) ?
             (<PrivateRoute exact path='/users' component = {ManageUsers}
-            web3={this.props.web3} contract={this.props.contract}> 
+            web3={this.props.web3} contract={this.props.contract}>
             </PrivateRoute>):
             <Redirect to='/login' />
 
           }
-          
-          
+
+
       </Switch>
     </Router>
     );
