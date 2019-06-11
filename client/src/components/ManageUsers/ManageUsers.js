@@ -4,7 +4,7 @@ import { Alert } from 'react-bootstrap';
 import {Modal, Table} from "react-bootstrap";
 import { connect } from 'react-redux';
 import {withRouter} from 'react-router-dom'
-import {landManagment,getUsers}  from "../../actions"
+import {landManagment,getUsers, loginUser}  from "../../actions"
 import './ManageUsers.css';
 class ManageUsers extends Component {
 
@@ -13,7 +13,7 @@ class ManageUsers extends Component {
          this.state = {
             showAddUserModal:false,
             userData:[],
-            submitted: false
+            submitted: false,
         }
     }
 
@@ -65,17 +65,18 @@ class ManageUsers extends Component {
 
     handleAddUser = () => {
       this.setState({ submitted: true });
-      const { username, password } = this.state;
-      if(username && password){
-        if(username.trim() !== ''){
+      const { username, password, email, password2, } = this.state;
+      if(username && password && email && password2){
+        if(username.trim() !== '' && password === password2){
           var data={
             username:this.state.username.trim(),
+            email: this.state.email,
             password:this.state.password,
-            web3:this.props.web3,
-            contract:this.props.contract
+            web3:this.props.web3
           }
-          this.props.createUserAccount(data);
-          this.toogleAddUserModal()
+          this.props.registerUser(data, this.props.history,data);
+          // this.props.createUserAccount(data);
+          // this.toogleAddUserModal()
            
         }
         
@@ -84,12 +85,14 @@ class ManageUsers extends Component {
       
     }
 
+  
+
 
     handleOnChangeInput = (e) => {
       this.setState({[e.target.id]:e.target.value})
     }
     render() {
-      const { username, password, submitted } = this.state;
+      const { username, password, submitted, password2, email } = this.state;
       console.log("this............state.........",this.state.userData)
         return (
             <React.Fragment>
@@ -164,12 +167,22 @@ class ManageUsers extends Component {
                                           
               }
               <input type="email" onChange={this.handleOnChangeInput} id="email" placeholder="Email" className="form-control mb-20" required/>
+              {
+                (submitted && !email)?
+                (<Alert>Email is required</Alert>):null
+              }
               <input type="password" onChange={this.handleOnChangeInput} id="password" placeholder="Password" className="form-control mb-20"/>
               {submitted && !password &&
                             <Alert variant= 'warning'>Password is required</Alert>
               }
               <input type="password" onChange={this.handleOnChangeInput} id="password2" placeholder="Confirm Password" className="form-control mb-20" required/>
-              
+              {(password && password2 && password !== password2)?
+                
+                (<span>Password and Confirm Password does not match</span>): 
+
+                (submitted && !password2)? 
+                (<Alert>Confirm password is required</Alert>) : null
+              }
               <a onClick={this.handleAddUser} className="primary-btn header-btn text-uppercase mb-20 login-button">Submit</a>
             </div>
 
@@ -180,15 +193,14 @@ class ManageUsers extends Component {
     }
 }
 
-function mapStateToProps({ landManagment,users }) {
-  return {
-    landManagment,
-    Users:users
-  }
-}
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+
+});
 
 export default  withRouter ( connect(mapStateToProps,{
-  createUserAccount:landManagment.createUserAccount,
+  registerUser:loginUser.registerUser,
   getUsers:getUsers.getAllUser
 })(ManageUsers));
 
