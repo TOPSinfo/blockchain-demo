@@ -34,20 +34,14 @@ class App extends Component {
 
   componentDidMount = async () => {
     try {
-      const web3 = await getWeb3();
-      const accounts = await web3.eth.getAccounts();
-      const networkId = await web3.eth.net.getId();
-      const deployedNetwork = LandManagment.networks[networkId];
-      const instance = new web3.eth.Contract(
-        LandManagment.abi,
-        deployedNetwork && deployedNetwork.address,
-      );
 
-      this.setState({ web3, contract: instance });
+    const web3 = await getWeb3();
+    const contractAddress = '0x25815F61e5Fde60f48b0657795627b7d303aa193'
+    const contractABI = [{"constant":false,"inputs":[{"name":"ownerAddress","type":"address"}],"name":"getLandByUser","outputs":[{"name":"","type":"uint256[]"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"landName","type":"string"},{"name":"ownerAddress","type":"address"}],"name":"createLand","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"fromAddress","type":"address"},{"name":"toAddress","type":"address"},{"name":"landId","type":"uint256"}],"name":"transferLand","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"landId","type":"uint256"}],"name":"getLandName","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"lands","outputs":[{"name":"landId","type":"uint256"},{"name":"landName","type":"string"},{"name":"ownerAddress","type":"address"}],"payable":false,"stateMutability":"view","type":"function"}]
+    const instance = new web3.eth.Contract(contractABI, contractAddress)
+
+    this.setState({ web3, contract: instance });
     } catch (error) {
-      // alert(
-      //   `Failed to load web3, accounts, or contract. Check console for details.`,
-      // );
       console.error(error);
     }
   };
