@@ -189,7 +189,8 @@ class ManageUsers extends Component {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors
+  errors: state.errors,
+  Users: state.landManagment.allAccounts
 });
 
 export default  withRouter ( connect(mapStateToProps,{
