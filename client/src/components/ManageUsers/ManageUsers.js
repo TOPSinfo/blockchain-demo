@@ -24,6 +24,7 @@ class ManageUsers extends Component {
 
     componentDidMount = () => {
       this.getUsers()
+      
       // if (this.props.auth.isAuthenticated) {
       //   this.props.history.push("/");
       // }
@@ -43,11 +44,21 @@ class ManageUsers extends Component {
     }
 
     componentWillReceiveProps = (nextProps) =>{
-      if (nextProps.errors) {
+      console.log(nextProps)
+    
+      // if (nextProps.errors) {
+      //   this.setState({
+      //     errors: nextProps.errors
+      //   });
+      // }
+      if(nextProps.Users && nextProps.Users.length > 0){
         this.setState({
-          errors: nextProps.errors
-        });
+          userData: nextProps.Users
+        })
       }
+
+      var userData = [];
+      var {allAccounts} = nextProps.Users;
       // allAccounts.map((users,index)=>{
       // console.log("users..................",users)
       // })
@@ -92,7 +103,8 @@ class ManageUsers extends Component {
     };
 
     render() {
-      const { errors } = this.state;
+      const { errors , userData} = this.state;
+      console.log("userdata .........",userData)
         return (
             <React.Fragment>
                 <Header />

@@ -4,6 +4,7 @@ const url ="http://localhost:5000";
 
 // Register User
 export const getAllUser = () => dispatch => {
+  console.log("called get user");
   axios
     .get(url+"/api/users/getallusers")
     .then(res => 
