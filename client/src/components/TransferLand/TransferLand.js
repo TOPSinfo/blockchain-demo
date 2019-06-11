@@ -82,7 +82,13 @@ class TransferLand extends Component {
                         <img className="d-block mx-auto" src={logo} alt=""/>
                     </div>
                     <div className="col-lg-6 cols">
-                        <input type="text" name="feet" placeholder="Username" className="form-control mb-20"/>
+                        {/* <input type="text" name="feet" placeholder="Username" className="form-control mb-20"/> */}
+                        <select className="browser-default custom-select">
+                            <option>Choose your option</option>
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                            <option value="3">Option 3</option>
+                        </select>
                         <div className="single-element-widget mt-30">
 							<div className="default-select" id="default-select">
 								<select>

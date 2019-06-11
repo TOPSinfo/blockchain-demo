@@ -3,7 +3,7 @@ import Header from "../Header/Header";
 import { Alert } from 'react-bootstrap';
 import {Modal, Table} from "react-bootstrap";
 import { connect } from 'react-redux';
-import {withRouter} from 'react-router-dom'
+import { Link, withRouter } from "react-router-dom";
 import {landManagment,getUsers, loginUser}  from "../../actions"
 import './ManageUsers.css';
 class ManageUsers extends Component {
@@ -14,12 +14,21 @@ class ManageUsers extends Component {
             showAddUserModal:false,
             userData:[],
             submitted: false,
+            name: "",
+            email: "",
+            password: "",
+            password2: "",
+            errors: {}
         }
     }
 
     componentDidMount = () => {
       this.getUsers()
+      // if (this.props.auth.isAuthenticated) {
+      //   this.props.history.push("/");
+      // }
     }
+
 
     getUsers = () =>{
       // var data={
@@ -34,13 +43,11 @@ class ManageUsers extends Component {
     }
 
     componentWillReceiveProps = (nextProps) =>{
-      
-      if(nextProps.getUsers.newUserAdded){
-        this.getUsers()
+      if (nextProps.errors) {
+        this.setState({
+          errors: nextProps.errors
+        });
       }
-
-      var userData = [];
-      var {allAccounts} = nextProps.Users;
       // allAccounts.map((users,index)=>{
       // console.log("users..................",users)
       // })
@@ -63,37 +70,30 @@ class ManageUsers extends Component {
       this.setState({showAddUserModal:!this.state.showAddUserModal})
     }
 
-    handleAddUser = () => {
-      this.setState({ submitted: true });
-      const { username, password, email, password2, } = this.state;
-      if(username && password && email && password2){
-        if(username.trim() !== '' && password === password2){
-          var data={
-            username:this.state.username.trim(),
-            email: this.state.email,
-            password:this.state.password,
-            web3:this.props.web3
-          }
-          this.props.registerUser(data, this.props.history,data);
-          // this.props.createUserAccount(data);
-          // this.toogleAddUserModal()
-           
-        }
-        
-      }
-      
-      
-    }
+    onChange = e => {
+      this.setState({ [e.target.id]: e.target.value });
+    };
 
+    onSubmit = e => {
+      e.preventDefault();
   
+      const newUser = {
+        name: this.state.name,
+        email: this.state.email,
+        password: this.state.password,
+        password2: this.state.password2
+      };
+  
+      var data={
+        web3 :this.props.web3,
+        contract:this.props.contract
+      }
+  
+      this.props.registerUser(newUser, this.props.history,data);
+    };
 
-
-    handleOnChangeInput = (e) => {
-      this.setState({[e.target.id]:e.target.value})
-    }
     render() {
-      const { username, password, submitted, password2, email } = this.state;
-      console.log("this............state.........",this.state.userData)
+      const { errors } = this.state;
         return (
             <React.Fragment>
                 <Header />
@@ -155,35 +155,17 @@ class ManageUsers extends Component {
           </Modal.Header>
           <Modal.Body>
             <div className="col-lg-6 cols">
-              <input type="text" onChange={this.handleOnChangeInput}  id="username" placeholder="Username" className="form-control mb-20"/>
-              {
-                (submitted && !username) ? 
-                  (<Alert variant='warning'>Username is required</Alert>) :
-
-                  (submitted && username.trim().length === 0) ?
-                          ( <Alert variant= 'warning'>
-                          Warning no leading whitespace
-                          </Alert> ) : null
-                                          
-              }
-              <input type="email" onChange={this.handleOnChangeInput} id="email" placeholder="Email" className="form-control mb-20" required/>
-              {
-                (submitted && !email)?
-                (<Alert>Email is required</Alert>):null
-              }
-              <input type="password" onChange={this.handleOnChangeInput} id="password" placeholder="Password" className="form-control mb-20"/>
-              {submitted && !password &&
-                            <Alert variant= 'warning'>Password is required</Alert>
-              }
-              <input type="password" onChange={this.handleOnChangeInput} id="password2" placeholder="Confirm Password" className="form-control mb-20" required/>
-              {(password && password2 && password !== password2)?
-                
-                (<span>Password and Confirm Password does not match</span>): 
-
-                (submitted && !password2)? 
-                (<Alert>Confirm password is required</Alert>) : null
-              }
-              <a onClick={this.handleAddUser} className="primary-btn header-btn text-uppercase mb-20 login-button">Submit</a>
+            <form noValidate onSubmit={this.onSubmit}>
+                                    <input onChange={this.onChange} value={this.state.name} error={errors.name} id="name" type="text" type="text" placeholder="Username" className="form-control mb-20"/>
+                                    <span className="red-text">{errors.name}</span>
+                                    <input onChange={this.onChange} value={this.state.email} error={errors.email} id="email" type="email"type="text" placeholder="Email" className="form-control mb-20"/>
+                                    <span className="red-text">{errors.email}</span>
+                                    <input onChange={this.onChange} value={this.state.password} error={errors.password} id="password" type="password" placeholder="Password" className="form-control mb-20"/>
+                                    <span className="red-text">{errors.password}</span>
+                                    <input onChange={this.onChange} value={this.state.password2} error={errors.password2} id="password2" type="password" placeholder="Confirm Password" className="form-control mb-20"/>
+                                    <span className="red-text">{errors.password2}</span>
+                                    <button type='submit' className="primary-btn header-btn text-uppercase mb-20 login-button">Register</button>
+                                </form>
             </div>
 
           </Modal.Body>
@@ -196,7 +178,7 @@ class ManageUsers extends Component {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-
+  errors: state.errors
 });
 
 export default  withRouter ( connect(mapStateToProps,{
