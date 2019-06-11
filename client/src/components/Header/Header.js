@@ -31,7 +31,7 @@ class Header extends Component {
                     <li><a onClick={(e)=> this.handleComponentChange(e,"/")}>Home</a></li>
                     <li><a onClick={(e)=> this.handleComponentChange(e,"/about")}>About</a></li>
                     {
-                        isAuthenticated ?
+                        (isAuthenticated && this.props.auth.user.isAdmin )?
                             (<React.Fragment>
                                 <li><a onClick={(e)=> this.handleComponentChange(e,"/transfer-land")}>Transfer</a></li>
                                 <li><a onClick={(e)=> this.handleComponentChange(e,"/lands")}>View and Create</a></li>
@@ -40,6 +40,15 @@ class Header extends Component {
                             </React.Fragment>
                              ) 
                             :
+                            (
+                            isAuthenticated && !this.props.auth.user.isAdmin )?
+                            (<React.Fragment>
+                                <li><a onClick={(e)=> this.handleComponentChange(e,"/transfer-land")}>Transfer</a></li>
+                                <li><a onClick={(e)=> this.handleComponentChange(e,"/lands")}>View and Create</a></li>
+                                    {/* <li><a onClick={(e)=> this.handleComponentChange(e,"/users")}>Users</a></li> */}
+                                        <li><a onClick={(e)=> this.onLogoutClick(e)}>Log Out</a></li>
+                            </React.Fragment>
+                             ) :
                             (<li><a onClick={(e)=> this.handleComponentChange(e,"/login")}>Log In</a></li>)
                     }
                     
