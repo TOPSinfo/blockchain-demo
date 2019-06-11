@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import History from './history';
-import { Router,Route,Switch } from 'react-router-dom';
+import { Router,Route,Switch, Redirect } from 'react-router-dom';
 import Home from './components/Home/Home';
 import Login from './components/Auth/Login';
 // import Login1 from './components/Login/Login';
@@ -9,6 +9,7 @@ import ManageLands from './components/ManageLands/ManageLands';
 import ManageUsers from './components/ManageUsers/ManageUsers';
 import About from './components/About/About';
 import Register from './components/Auth/Register';
+import { connect } from "react-redux";
 import PrivateRoute from './components/private-route/PrivateRoute'
 class Routes extends Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class Routes extends Component {
   }
 
   render() {
+    const {isAuthenticated }=this.props.auth 
     return (
       <Router history={History}>
       <Switch>
@@ -36,19 +38,21 @@ class Routes extends Component {
             render={ ()=>(<Register />) }>
           </Route>
 
-          {/* <Route exact path='/register'
-            render={ ()=>(<Login1 />) }>
-          </Route> */}
-
           <PrivateRoute exact path='/transfer-land'
             component = {TransferLand} >
           </PrivateRoute>
           <PrivateRoute exact path='/lands'  component = {ManageLands}
              web3={this.props.web3} contract={this.props.contract}>
           </PrivateRoute>
-          <PrivateRoute exact path='/users' component = {ManageUsers}
-             web3={this.props.web3} contract={this.props.contract}> 
-          </PrivateRoute>
+          { 
+            (isAuthenticated && this.props.auth.user.isAdmin) ? 
+            (<PrivateRoute exact path='/users' component = {ManageUsers}
+            web3={this.props.web3} contract={this.props.contract}> 
+            </PrivateRoute>):
+            <Redirect to='/login' />
+
+          }
+          
           
       </Switch>
     </Router>
@@ -56,4 +60,8 @@ class Routes extends Component {
   }
 }
 
-export default(Routes);
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(mapStateToProps,{})(Routes);

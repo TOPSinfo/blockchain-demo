@@ -15,7 +15,7 @@ class Register extends Component {
       password: "",
       password2: "",
       errors: {}
-    };
+    };  
   }
 
   componentDidMount() {
