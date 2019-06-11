@@ -14,7 +14,6 @@ class Header extends Component {
 
     onLogoutClick = e => {
         e.preventDefault();
-        console.log("called")
         this.props.logoutUser();
       };
 

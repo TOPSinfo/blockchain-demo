@@ -4,13 +4,14 @@ import authReducer from "./auth/authReducer";
 import errorReducer from "./auth/errorReducer";
 
 
-// import authReducer from './auth/reducer';
+import usersReducer from './users/reducer';
 import landManagmentReducer from './landManagment/reducer'
 
 export default combineReducers({
   auth: authReducer,
   errors: errorReducer,
-  landManagment:landManagmentReducer
+  landManagment:landManagmentReducer,
+  users:usersReducer
 });
 
 

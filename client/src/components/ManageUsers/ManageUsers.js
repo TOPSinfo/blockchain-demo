@@ -4,7 +4,7 @@ import { Alert } from 'react-bootstrap';
 import {Modal, Table} from "react-bootstrap";
 import { connect } from 'react-redux';
 import {withRouter} from 'react-router-dom'
-import {landManagment}  from "../../actions"
+import {landManagment,getUsers}  from "../../actions"
 import './ManageUsers.css';
 class ManageUsers extends Component {
 
@@ -18,39 +18,45 @@ class ManageUsers extends Component {
     }
 
     componentDidMount = () => {
-      this.getAllUsers()
+      this.getUsers()
     }
 
-    getAllUsers = () =>{
-      var data={
-        contract:this.props.contract
+    getUsers = () =>{
+      // var data={
+      //   contract:this.props.contract
+      // }
+      this.props.getUsers();
+      if(this.props.Users){
+        this.setState({
+          userData:this.props.Users.allAccounts      
+        })  
       }
-      this.props.getAllUsers(data)
     }
 
     componentWillReceiveProps = (nextProps) =>{
       
-      if(nextProps.landManagment.newUserAdded){
-        this.getAllUsers()
+      if(nextProps.getUsers.newUserAdded){
+        this.getUsers()
       }
 
       var userData = [];
-      var {allAccounts} = nextProps.landManagment;
-      allAccounts.then((allAccounts)=>{
-        allAccounts[1].map((username,index)=>{
-            userData[index] = {}
-            userData[index].username = username
-        })
+      var {allAccounts} = nextProps.Users;
+      // allAccounts.map((users,index)=>{
+      // console.log("users..................",users)
+      // })
+      // allAccounts.then((allAccounts)=>{
+      //   allAccounts[1].map((username,index)=>{
+      //       userData[index] = {}
+      //       userData[index].username = username
+      //   })
 
-        allAccounts[0].map((accountId,index)=>{
-           userData[index].address = accountId
-       })
-
-
-       this.setState({userData:userData})
-      }).catch((err)=>{
-          console.log(err)
-      })
+      //   allAccounts[0].map((accountId,index)=>{
+      //      userData[index].address = accountId
+      //  })
+      //  this.setState({userData:userData})
+      // }).catch((err)=>{
+      //     console.log(err)
+      // })
     }
 
     toogleAddUserModal = () => {
@@ -68,7 +74,6 @@ class ManageUsers extends Component {
             web3:this.props.web3,
             contract:this.props.contract
           }
-          console.log(data)
           this.props.createUserAccount(data);
           this.toogleAddUserModal()
            
@@ -85,8 +90,7 @@ class ManageUsers extends Component {
     }
     render() {
       const { username, password, submitted } = this.state;
-      console.log("submitted...................",submitted,"username",username)
-      // console.log("username.trim().length === 0",username.trim().length === 0)
+      console.log("this............state.........",this.state.userData)
         return (
             <React.Fragment>
                 <Header />
@@ -125,14 +129,14 @@ class ManageUsers extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.userData.map((user,index)=>{
-                if(index !== 0){
+              {this.state.userData && this.state.userData.map((user,index)=>{
+                
                   return(<tr key={index}>
-                    <td>{index}</td>
-                    <td>{user.username}</td>
-                    <td>{user.address}</td>
+                    <td>{index+1}</td>
+                    <td>{user.name}</td>
+                    <td>{user._id}</td>
                   </tr>)
-                }
+                
               })}
             </tbody>
           </Table>
@@ -176,15 +180,16 @@ class ManageUsers extends Component {
     }
 }
 
-function mapStateToProps({ landManagment }) {
+function mapStateToProps({ landManagment,users }) {
   return {
-    landManagment
+    landManagment,
+    Users:users
   }
 }
 
 export default  withRouter ( connect(mapStateToProps,{
   createUserAccount:landManagment.createUserAccount,
-  getAllUsers:landManagment.getAllUsers
+  getUsers:getUsers.getAllUser
 })(ManageUsers));
 
 

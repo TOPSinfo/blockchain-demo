@@ -107,7 +107,6 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/getallusers", (req, res) => {
-
   User.find().then(user => {
     if (user) {
       return res.status(200).json({ users:user });
