@@ -46,10 +46,9 @@ class Header extends Component {
                             (<React.Fragment>
                                 <li><a onClick={(e)=> this.handleComponentChange(e,"/transfer-land")}>Transfer</a></li>
                                 <li><a onClick={(e)=> this.handleComponentChange(e,"/lands")}>View and Create</a></li>
-                                    {/* <li><a onClick={(e)=> this.handleComponentChange(e,"/users")}>Users</a></li> */}
                                         <li><a onClick={(e)=> this.onLogoutClick(e)}>Log Out</a></li>
                             </React.Fragment>
-                             ) :
+                            ) :
                             (<li><a onClick={(e)=> this.handleComponentChange(e,"/login")}>Log In</a></li>)
                     }
                     
