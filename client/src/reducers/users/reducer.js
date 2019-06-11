@@ -1,4 +1,4 @@
-import t from '../../actions/landManagment/types';
+import t from '../../actions/users/types';
 
 export default function(
   state = {

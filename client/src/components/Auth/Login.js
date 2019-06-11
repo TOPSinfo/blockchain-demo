@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { loginUser } from "../../actions/index";
-import classnames from "classnames";
 import { connect } from 'react-redux';
 import {withRouter,Link} from 'react-router-dom'
-import {auth}  from "../../actions"
 import './login.css';
 import logo from '../../asserts/img/bitcoin.png';
 

@@ -27,7 +27,7 @@ export const getAllUsers = (data) => {
 }
 
 export const createLand = (data) => {
-    const {web3, contract, landName} = data;
+    // const {web3, contract, landName} = data;
 
     // var createLand = contract.methods.createLand()
     return{ type: t.CREATE_LAND, payload: {}};

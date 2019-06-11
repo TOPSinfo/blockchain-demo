@@ -4,7 +4,6 @@ import t from './types';
 
 export const loginUser = (data) => {
   const {username, password, contract} = data;
-  console.log(contract)
   var checkIfUserExists = contract.methods.checkIfUserExists(username,password).call();
   checkIfUserExists.then((data)=>{
     alert(data)

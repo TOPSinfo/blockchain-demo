@@ -3,7 +3,6 @@ import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { loginUser }  from "../../actions/index";
-import classnames from "classnames";
 import logo from '../../asserts/img/bitcoin.png';
 
 class Register extends Component {
