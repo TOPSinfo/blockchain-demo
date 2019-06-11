@@ -88,7 +88,7 @@ class ManageUsers extends Component {
   
    
       this.props.registerUser(newUser, this.props.history);
-      
+      this.toogleAddUserModal();
     };
 
     render() {
@@ -163,7 +163,7 @@ class ManageUsers extends Component {
                                     <span className="red-text">{errors.password}</span>
                                     <input onChange={this.onChange} value={this.state.password2} error={errors.password2} id="password2" type="password" placeholder="Confirm Password" className="form-control mb-20"/>
                                     <span className="red-text">{errors.password2}</span>
-                                    <button type='submit' className="primary-btn header-btn text-uppercase mb-20 login-button">Register</button>
+                                    <button type='submit' className="primary-btn header-btn text-uppercase mb-20 login-button">Add User</button>
                                 </form>
             </div>
 
