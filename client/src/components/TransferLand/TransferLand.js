@@ -1,8 +1,54 @@
 import React, { Component } from "react";
 import logo from '../../asserts/img/bitcoin.png';
 import Header from'../Header/Header';
+import config from '../../config/accounts';
+const Tx = require('ethereumjs-tx');
+
 
 class TransferLand extends Component {
+
+
+    handleTransferLand = async() => {
+        const { web3, contract } = this.props;
+        console.log(web3)
+        console.log(contract)
+         //change the landname and Owner Addres from the Data
+         var landId = 0; //***************change this value */
+         var fromAddress = "0x72019284f6eF69f9a322193c91185222e80327B4"; //************Change this value */
+         var toAddress = "0x939Fe916Eb58d7EeDb58B2942Ca6F2e4aDC2238b"; //************Change this value */
+
+         await web3.eth.getTransactionCount(config()[0].address, async (err, txCount) => {
+
+             const txObject = {
+               nonce:    web3.utils.toHex(txCount),
+               gasLimit: web3.utils.toHex(8000000), // Raise the gas limit to a much higher amount
+               gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei')),
+               to: config()[0].contractAddress,
+               data: contract.methods.transferLand(fromAddress,toAddress,landId).encodeABI()
+             }
+
+             const tx = new Tx(txObject)
+             tx.sign(Buffer.from(config()[0].privateKey, 'hex'))
+
+             const serializedTx = tx.serialize()
+             const raw = '0x' + serializedTx.toString('hex')
+
+             await web3.eth.sendSignedTransaction(raw, async (err, txHash) => {
+               console.log('err:', err, 'txHash:', txHash)
+
+               if(txHash){
+                 await web3.eth.getTransaction(txHash,(err,data)=>{
+
+                   //here is the data that needs to be saved..
+                   console.log(data) /*************send this data to the database */
+                 })
+               }
+             })
+           })
+    }
+
+
+
     render() {
         return (
         <React.Fragment>
@@ -48,7 +94,7 @@ class TransferLand extends Component {
 								</select>
 							</div>
 						</div>
-                        <h1>Transfer Land</h1>
+                        <a onClick={this.handleTransferLand} className="primary-btn header-btn text-uppercase mb-20">Transfer Land</a>
                     </div>
                 </div>
             </div>

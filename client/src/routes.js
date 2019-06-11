@@ -39,7 +39,10 @@ class Routes extends Component {
           </Route>
 
           <PrivateRoute exact path='/transfer-land'
-            component = {TransferLand} >
+            component = {TransferLand}
+            web3={this.props.web3}
+            contract={this.props.contract}
+            >
           </PrivateRoute>
           <PrivateRoute exact path='/lands'  component = {ManageLands}
              web3={this.props.web3} contract={this.props.contract}>
