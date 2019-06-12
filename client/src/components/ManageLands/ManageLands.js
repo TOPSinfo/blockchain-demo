@@ -52,7 +52,7 @@ class ManageLands extends Component {
         //blockchain part starts from here
         var {web3,contract} = this.props;
         //change the landname and Owner Addres from the Data
-        var land = "Sakar-5"; //***************change this value */
+        var land = this.state.landName;
         var ownerAddress = "0x72019284f6eF69f9a322193c91185222e80327B4"; //************Change this value */
 
         await web3.eth.getTransactionCount(config()[0].address, async (err, txCount) => {
@@ -79,13 +79,15 @@ class ManageLands extends Component {
 
                   //here is the data that needs to be saved..
                   console.log(data) /*************send this data to the database */
+                  console.log(this.props.auth)
+                  this.toogleAddLandModal()
                 })
               }
             })
           })
         //blockchain part ends from here
 
-            this.toogleAddLandModal()
+
       }
     }
     }
@@ -211,9 +213,9 @@ class ManageLands extends Component {
     }
 }
 
-function mapStateToProps({ landManagment }) {
+function mapStateToProps({ landManagment,auth }) {
   return {
-    landManagment
+    landManagment,auth
   }
 }
 

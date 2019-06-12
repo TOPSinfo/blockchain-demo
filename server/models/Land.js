@@ -9,10 +9,14 @@ const LandSchema = new Schema({
     currentOwner :{
         type: String,
         required: true },
+    landId:{
+        type: Number,
+        required: true
+    },
     history : [
         {
-            OwnerAddress: { type: String, default:null}, 
-            username: { type: String,default:null }, 
+            OwnerAddress: { type: String, default:null},
+            username: { type: String,default:null },
             Timestamp:{ type: Date, default: Date.now }
         }
     ]
