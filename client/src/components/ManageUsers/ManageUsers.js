@@ -128,22 +128,25 @@ class ManageUsers extends Component {
       })
       if(validateForm(this.state.errors)) {
         const { fullName, email, password, password2} = this.state;
-        if(fullName.trim().length > 0  && email  && password === password2){
-          const newUser = {
-            name: this.state.fullName.trim(),
-            email: this.state.email.trim(),
-            password: this.state.password,
-            password2: this.state.password2,
-            web3 :this.props.web3,
-            contract:this.props.contract
-          };
-
-          this.props.registerUser(newUser, this.props.history);
-          this.toogleAddUserModal();
-        
-          console.log(newUser)
-          console.info('Valid Form')
+        if(fullName && email){
+          if(fullName.trim().length > 0  && email  && password === password2){
+            const newUser = {
+              name: this.state.fullName.trim(),
+              email: this.state.email.trim(),
+              password: this.state.password,
+              password2: this.state.password2,
+              web3 :this.props.web3,
+              contract:this.props.contract
+            };
+  
+            this.props.registerUser(newUser, this.props.history);
+            this.toogleAddUserModal();
+          
+            console.log(newUser)
+            console.info('Valid Form')
+          }
         }
+        
       }else{
         console.error('Invalid Form')
       }
@@ -238,7 +241,7 @@ class ManageUsers extends Component {
                                         <span>Name is reqiured!</span>
                                       }
                                       {
-                                        (submitted && fullName.trim().length === 0) &&
+                                        (submitted && fullName && fullName.trim().length === 0) &&
                                         <span>Avoid Space </span>
                                       }
                                     <input onChange={this.handleChange} name="email" type="email" value={this.state.email} placeholder="Email" className="form-control mb-20"/>
@@ -249,7 +252,7 @@ class ManageUsers extends Component {
                                         <span>Email is required!</span>
                                       }
                                       {
-                                        (submitted && email.trim().length === 0) &&
+                                        (submitted && email &&  email.trim().length === 0) &&
                                         <span>Avoid Space </span>
                                       }
                                     <input onChange={this.handleChange} name= "password" type="password" value={this.state.password} placeholder="Password" className="form-control mb-20"/>
