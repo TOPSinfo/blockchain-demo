@@ -1,52 +1,128 @@
 import React, { Component } from "react";
 import logo from '../../asserts/img/bitcoin.png';
+import { connect } from 'react-redux';
+import { withRouter } from "react-router-dom";
 import Header from'../Header/Header';
 import config from '../../config/accounts';
+import {users,landManagment}  from "../../actions"
+import './TransferLand.css';
 const Tx = require('ethereumjs-tx');
 
 
 class TransferLand extends Component {
-
-
-    handleTransferLand = async() => {
-        const { web3, contract } = this.props;
-        console.log(web3)
-        console.log(contract)
-         //change the landname and Owner Addres from the Data
-         var landId = 0; //***************change this value */
-         var fromAddress = "0x72019284f6eF69f9a322193c91185222e80327B4"; //************Change this value */
-         var toAddress = "0x939Fe916Eb58d7EeDb58B2942Ca6F2e4aDC2238b"; //************Change this value */
-
-         await web3.eth.getTransactionCount(config()[0].address, async (err, txCount) => {
-
-             const txObject = {
-               nonce:    web3.utils.toHex(txCount),
-               gasLimit: web3.utils.toHex(8000000), // Raise the gas limit to a much higher amount
-               gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei')),
-               to: config()[0].contractAddress,
-               data: contract.methods.transferLand(fromAddress,toAddress,landId).encodeABI()
-             }
-
-             const tx = new Tx(txObject)
-             tx.sign(Buffer.from(config()[0].privateKey, 'hex'))
-
-             const serializedTx = tx.serialize()
-             const raw = '0x' + serializedTx.toString('hex')
-
-             await web3.eth.sendSignedTransaction(raw, async (err, txHash) => {
-               console.log('err:', err, 'txHash:', txHash)
-
-               if(txHash){
-                 await web3.eth.getTransaction(txHash,(err,data)=>{
-
-                   //here is the data that needs to be saved..
-                   console.log(data) /*************send this data to the database */
-                 })
-               }
-             })
-           })
+    constructor(props){
+        super(props);
+        this.state = {
+            users:[],
+            lands:[],
+            errors:{}
+        }
     }
 
+    componentDidMount = () =>{
+        this.props.getAllUser();
+        this.props.getAllLandsByOwner({currentOwner:this.props.auth.user.name})
+    }
+
+    componentWillReceiveProps = (nextProps) => {
+        if(nextProps.users.allAccounts.length){
+            this.setState({users:nextProps.users.allAccounts})
+        }
+        if(nextProps.landManagment.lands.land.length){
+            this.setState({lands:nextProps.landManagment.lands.land})
+        }
+    }
+
+    handleTransferLand = async() => {
+        if(this.validate()){
+            const { web3, contract } = this.props;
+
+             //change the landname and Owner Addres from the Data
+             var landId = parseInt(this.state.land); //***************change this value */
+             var fromAddress = this.props.auth.user.address; //************Change this value */
+             var toAddress = this.state.transferTo; //************Change this value */
+
+
+             await web3.eth.getTransactionCount(config()[0].address, async (err, txCount) => {
+
+                 const txObject = {
+                   nonce:    web3.utils.toHex(txCount),
+                   gasLimit: web3.utils.toHex(8000000), // Raise the gas limit to a much higher amount
+                   gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei')),
+                   to: config()[0].contractAddress,
+                   data: contract.methods.transferLand(fromAddress,toAddress,landId).encodeABI()
+                 }
+
+                 const tx = new Tx(txObject)
+                 tx.sign(Buffer.from(config()[0].privateKey, 'hex'))
+
+                 const serializedTx = tx.serialize()
+                 const raw = '0x' + serializedTx.toString('hex')
+
+                 await web3.eth.sendSignedTransaction(raw, async (err, txHash) => {
+                   console.log('err:', err, 'txHash:', txHash)
+
+                   if(txHash){
+                     await web3.eth.getTransaction(txHash,async(err,data)=>{
+                       //here is the data that needs to be saved..
+                       console.log(data);
+                        this.state.users.map((user)=>{
+                            if(user.address === toAddress){
+
+                                var transferData = {
+                                    landId,
+                                    reciept:data,
+                                    ownerAddress:toAddress,
+                                    username:user.name
+                                }
+                                //calling action and sending data from here
+                                this.props.transferLand(transferData);
+                            }
+                        })
+                     })
+                   }
+                 })
+               })
+        }
+    }
+
+    validate = () => {
+
+            if(typeof this.state.transferTo === "undefined" || this.state.transferTo === 'null'){
+                var errors = {...this.state.errors,transfer:"Please select username-address."}
+                this.setState({errors})
+                return false;
+            }
+            else if(typeof this.state.land === "undefined" || this.state.land === 'null'){
+                var errors = {...this.state.errors,land:"Please select land."}
+                this.setState({errors})
+                return false;
+            }
+            return true
+
+    }
+
+    handleOnTransferChange = (e) =>{
+        if(e.target.value === null || typeof e.target.value === 'undefined'|| e.target.value === 'null'){
+            var errors = {...this.state.errors,transfer:"Please select username-address."}
+            this.setState({errors})
+        }else{
+            var errors = {...this.state.errors,transfer:""}
+            this.setState({errors})
+        }
+        this.setState({"transferTo":e.target.value})
+    }
+
+    handleOnLandChange = (e) =>{
+        if(e.target.value === null || typeof e.target.value === 'undefined'|| e.target.value === 'null'){
+            var errors = {...this.state.errors,land:"Please select land."}
+            this.setState({errors})
+        }else{
+            var errors = {...this.state.errors,land:""}
+            this.setState({errors})
+        }
+        this.setState({"land":e.target.value})
+    }
 
 
     render() {
@@ -83,24 +159,26 @@ class TransferLand extends Component {
                     </div>
                     <div className="col-lg-6 cols">
                         {/* <input type="text" name="feet" placeholder="Username" className="form-control mb-20"/> */}
-                        <select className="browser-default custom-select">
-                            <option>Choose your option</option>
-                            <option value="1">Option 1</option>
-                            <option value="2">Option 2</option>
-                            <option value="3">Option 3</option>
+                        <select defaultValue="null" value={this.state.transferTo} onChange={(e) => this.handleOnTransferChange(e)} id="transferTo" className="browser-default custom-select">
+                            <option value="null">Transfer To</option>
+                            {this.state.users.map((user,index)=>{
+                                return(
+                                    <option key={index} value={user.address}>{user.name} - {user.address}</option>
+                                )
+                            })}
                         </select>
-                        <div className="single-element-widget mt-30">
-							<div className="default-select" id="default-select">
-								<select>
-									<option value="1">English</option>
-									<option value="1">Spanish</option>
-									<option value="1">Arabic</option>
-									<option value="1">Portuguise</option>
-									<option value="1">Bengali</option>
-								</select>
-							</div>
-						</div>
-                        <a onClick={this.handleTransferLand} className="primary-btn header-btn text-uppercase mb-20">Transfer Land</a>
+                        <span className="error">{this.state.errors.transfer}</span>
+                        <br></br>
+                        <select defaultValue="null" onChange={(e) => this.handleOnLandChange(e)} id="landId" className="browser-default custom-select second-input">
+                            <option value="null">Select Land</option>
+                            {this.state.lands.map((land,index)=>{
+                                return(
+                                    <option key={index} value={land.landId}>{land.landName}</option>
+                                )
+                            })}
+                        </select>
+                        <span className="error">{this.state.errors.land}</span>
+                        <a onClick={this.handleTransferLand} className="primary-btn header-btn text-uppercase mb-20 transfer-btn">Transfer Land</a>
                     </div>
                 </div>
             </div>
@@ -111,4 +189,17 @@ class TransferLand extends Component {
     }
 }
 
-export default TransferLand;
+function mapStateToProps({ landManagment,auth,users}) {
+    return {
+      landManagment,
+      users,
+      auth
+    }
+  }
+
+  export default  withRouter (connect(mapStateToProps,{
+    getAllUser:users.getAllUser,
+    getAllLandsByOwner:landManagment.getAllLandsByOwner,
+    transferLand:landManagment.transferLand
+  })(TransferLand));
+

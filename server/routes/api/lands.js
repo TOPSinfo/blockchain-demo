@@ -9,7 +9,8 @@ router.post("/createland", (req, res) => {
         currentOwner: req.body.currentOwner,
         landId:lends.length,
         history: [{ OwnerAddress: req.body.OwnerAddress,
-                    username: req.body.username }]
+                    username: req.body.username,
+                    reciept: req.body.reciept }]
     });
 
     newLand
@@ -54,5 +55,26 @@ router.post("/get-land-by-owner", (req, res) => {
     });
 });
 
+router.post("/transfer-land", (req, res) => {
+  var data = {
+    "reciept":req.body.reciept,
+    "ownerAddress":req.body.ownerAddress,
+    "username": req.body.username
+  }
+  Land.update(
+    { landId: req.body.landId },
+    { $push: { history: data } }
+    ).then((data)=>{
 
+      Land.findOneAndUpdate({ landId: req.body.landId },
+           { currentOwner: req. body.username })
+          .then((data)=>{
+            res.status(200).json({ success:true });
+          })
+          .catch((err)=>{console.log(err)})
+    })
+    .catch((err)=> { console.log(err)});
+
+
+});
 module.exports = router;

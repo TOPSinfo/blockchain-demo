@@ -23,29 +23,16 @@ class ManageUsers extends Component {
     }
 
     componentDidMount = () => {
-      this.getUsers()
-      
+
+
       // if (this.props.auth.isAuthenticated) {
       //   this.props.history.push("/");
       // }
     }
 
-
-    getUsers = () =>{
-      // var data={
-      //   contract:this.props.contract
-      // }
-      this.props.getUsers();
-      if(this.props.Users){
-        this.setState({
-          userData:this.props.Users.allAccounts      
-        })  
-      }
-    }
-
     componentWillReceiveProps = (nextProps) =>{
       console.log(nextProps)
-    
+
       // if (nextProps.errors) {
       //   this.setState({
       //     errors: nextProps.errors
@@ -87,7 +74,7 @@ class ManageUsers extends Component {
 
     onSubmit = e => {
       e.preventDefault();
-  
+
       const newUser = {
         name: this.state.name,
         email: this.state.email,
@@ -96,8 +83,8 @@ class ManageUsers extends Component {
         web3 :this.props.web3,
         contract:this.props.contract
       };
-  
-   
+
+
       this.props.registerUser(newUser, this.props.history);
       this.toogleAddUserModal();
     };
@@ -144,13 +131,13 @@ class ManageUsers extends Component {
             </thead>
             <tbody>
               {this.state.userData && this.state.userData.map((user,index)=>{
-                
+
                   return(<tr key={index}>
                     <td>{index+1}</td>
                     <td>{user.name}</td>
                     <td>{user._id}</td>
                   </tr>)
-                
+
               })}
             </tbody>
           </Table>
@@ -195,7 +182,7 @@ const mapStateToProps = state => ({
 
 export default  withRouter ( connect(mapStateToProps,{
   registerUser:loginUser.registerUser,
-  getUsers:getUsers.getAllUser
+
 })(ManageUsers));
 
 
