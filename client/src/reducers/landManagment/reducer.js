@@ -3,7 +3,8 @@ import t from '../../actions/landManagment/types';
 export default function(
   state = {
     newLand:{},
-    landCreated:false
+    landCreated:false,
+    landTransfered:false
   },
   action
 ) {
@@ -27,11 +28,14 @@ export default function(
       if(action.payload){
           state.lands = action.payload;
           state.landCreated = false;
+          state.landTransfered=false
       }
       return {...state};
     case t.TRANSFER_LAND:
-
-      return {...state};
+      if(action.payload){
+          state.landTransfered=true
+        }
+        return {...state};
     default:
       return state;
   }
