@@ -6,6 +6,21 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from "react-router-dom";
 import {landManagment,getUsers, loginUser}  from "../../actions"
 import './ManageUsers.css';
+
+
+const validateForm = (errors) => {
+  let valid = true;
+  Object.values(errors).forEach(
+    // if we have an error string set valid to false
+    (val) => val.length > 0 && (valid = false)
+  );
+  return valid;
+}
+
+const validEmailRegex = 
+  RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
+
+
 class ManageUsers extends Component {
 
     constructor(props){
@@ -14,11 +29,11 @@ class ManageUsers extends Component {
             showAddUserModal:false,
             userData:[],
             submitted: false,
-            name: "",
-            email: "",
-            password: "",
-            password2: "",
-            errors: {}
+            errors: {
+              fullName: '',
+              email: '',
+              password: '',
+            }
         }
     }
 
@@ -81,30 +96,91 @@ class ManageUsers extends Component {
       this.setState({showAddUserModal:!this.state.showAddUserModal})
     }
 
-    onChange = e => {
-      this.setState({ [e.target.id]: e.target.value });
-    };
+    // onChange = e => {
+    //   this.setState({ [e.target.id]: e.target.value });
+    // };
 
-    onSubmit = e => {
-      e.preventDefault();
+    handleChange = (event) => {
+      event.preventDefault();
+      const { name, value } = event.target;
+      this.setState({ [event.target.name]: event.target.value });
+      let errors = this.state.errors;
+    
+      switch (name) {
+        case 'fullName': 
+          errors.fullName = 
+             value.length < 5
+              ? 'Full Name must be 5 characters long!'
+              : '';
+          break;
+        case 'email': 
+          errors.email = 
+            validEmailRegex.test(value)
+              ? ''
+              :value.length === 0 ? 'Email is required': 'Email is not valid!';
+          break;
+        case 'password': 
+          errors.password = 
+            value.length < 8
+              ? 'Password must be 8 characters long!'
+              :value.length === 0 ? 'Password is required': '';
+          break;
+        default:
+          break;
+      }
+    
+      this.setState({errors, [name]: value}, ()=> {
+          console.log(errors)
+      })
+    }
+
+    handleSubmit = (event) => {
+      event.preventDefault();
+      this.setState({
+        submitted : true
+      })
+      if(validateForm(this.state.errors)) {
+        const { fullName, email, password, password2} = this.state;
+        if(fullName.trim().length > 0  && email  && password === password2){
+          const newUser = {
+            name: this.state.fullName.trim(),
+            email: this.state.email.trim(),
+            password: this.state.password,
+            password2: this.state.password2,
+            web3 :this.props.web3,
+            contract:this.props.contract
+          };
+
+          this.props.registerUser(newUser, this.props.history);
+          this.toogleAddUserModal();
+        
+          console.log(newUser)
+          console.info('Valid Form')
+        }
+      }else{
+        console.error('Invalid Form')
+      }
+    }
+    // onSubmit = e => {
+    //   e.preventDefault();
   
-      const newUser = {
-        name: this.state.name,
-        email: this.state.email,
-        password: this.state.password,
-        password2: this.state.password2,
-        web3 :this.props.web3,
-        contract:this.props.contract
-      };
+      // const newUser = {
+      //   name: this.state.name,
+      //   email: this.state.email,
+      //   password: this.state.password,
+      //   password2: this.state.password2,
+      //   web3 :this.props.web3,
+      //   contract:this.props.contract
+      // };
   
    
-      this.props.registerUser(newUser, this.props.history);
-      this.toogleAddUserModal();
-    };
+      
+    // };
+
+    
 
     render() {
-      const { errors , userData} = this.state;
-      console.log("userdata .........",userData)
+      const { errors, fullName, email, submitted , password, password2} = this.state;
         return (
             <React.Fragment>
                 <Header />
@@ -166,15 +242,45 @@ class ManageUsers extends Component {
           </Modal.Header>
           <Modal.Body>
             <div className="col-lg-6 cols">
-            <form noValidate onSubmit={this.onSubmit}>
-                                    <input onChange={this.onChange} value={this.state.name} error={errors.name} id="name" type="text" type="text" placeholder="Username" className="form-control mb-20"/>
-                                    <span className="red-text">{errors.name}</span>
-                                    <input onChange={this.onChange} value={this.state.email} error={errors.email} id="email" type="email"type="text" placeholder="Email" className="form-control mb-20"/>
-                                    <span className="red-text">{errors.email}</span>
-                                    <input onChange={this.onChange} value={this.state.password} error={errors.password} id="password" type="password" placeholder="Password" className="form-control mb-20"/>
-                                    <span className="red-text">{errors.password}</span>
-                                    <input onChange={this.onChange} value={this.state.password2} error={errors.password2} id="password2" type="password" placeholder="Confirm Password" className="form-control mb-20"/>
-                                    <span className="red-text">{errors.password2}</span>
+            <form noValidate onSubmit={this.handleSubmit}>
+                                    <input onChange={this.handleChange} name ="fullName" value={this.state.name} placeholder="Username" className="form-control mb-20"/>
+                                    {errors.fullName.length > 0 && 
+                                      <span className='error'>{errors.fullName}</span>}
+                                      {
+                                        (submitted && !fullName) &&
+                                        <span>Name is reqiured!</span>
+                                      }
+                                      {
+                                        (submitted && fullName.trim().length === 0) &&
+                                        <span>Avoid Space </span>
+                                      }
+                                    <input onChange={this.handleChange} name="email" type="email" value={this.state.email} placeholder="Email" className="form-control mb-20"/>
+                                    {errors.email.length > 0 && 
+                                        <span className='error'>{errors.email}</span>}
+                                        {
+                                        (submitted && !email) &&
+                                        <span>Email is required!</span>
+                                      }
+                                      {
+                                        (submitted && email.trim().length === 0) &&
+                                        <span>Avoid Space </span>
+                                      }
+                                    <input onChange={this.handleChange} name= "password" type="password" value={this.state.password} placeholder="Password" className="form-control mb-20"/>
+                                    {errors.password.length > 0 && 
+                                        <span className='error'>{errors.password}</span>}
+                                        {
+                                        (submitted && !password) &&
+                                        <span>Password is required!</span>
+                                      }
+                                    <input onChange={this.handleChange} value={this.state.password2} name="password2" type="password" placeholder="Confirm Password" className="form-control mb-20"/>
+                                    {
+                                        (submitted && !password2) &&
+                                        <span>Confirm password is required!</span>
+                                      }
+                                      {
+                                        (submitted && password !== password2) &&
+                                        <span>Password and Confirm Password does not match !</span>
+                                      }
                                     <button type='submit' className="primary-btn header-btn text-uppercase mb-20 login-button">Add User</button>
                                 </form>
             </div>
