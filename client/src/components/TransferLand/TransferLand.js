@@ -6,6 +6,7 @@ import Header from'../Header/Header';
 import config from '../../config/accounts';
 import {users,landManagment}  from "../../actions"
 import './TransferLand.css';
+import Loader from '../Loader/Loader';
 const Tx = require('ethereumjs-tx');
 
 
@@ -15,7 +16,9 @@ class TransferLand extends Component {
         this.state = {
             users:[],
             lands:[],
-            errors:{}
+            errors:{},
+            isTransctionInProcess:false,
+            transctionError:{message:""}
         }
     }
 
@@ -28,13 +31,20 @@ class TransferLand extends Component {
         if(nextProps.users.allAccounts.length){
             this.setState({users:nextProps.users.allAccounts})
         }
-        if(nextProps.landManagment.lands.land.length){
+        if(nextProps.landManagment.lands.land.length > 0){
             this.setState({lands:nextProps.landManagment.lands.land})
+        }else{
+            this.setState({lands:[]})
+        }
+        if(nextProps.landManagment.landTransfered){
+            this.setState({isTransctionInProcess:false});
+            this.props.getAllLandsByOwner({currentOwner:this.props.auth.user.name})
         }
     }
 
     handleTransferLand = async() => {
         if(this.validate()){
+            this.setState({isTransctionInProcess:true})
             const { web3, contract } = this.props;
 
              //change the landname and Owner Addres from the Data
@@ -62,6 +72,13 @@ class TransferLand extends Component {
                  await web3.eth.sendSignedTransaction(raw, async (err, txHash) => {
                    console.log('err:', err, 'txHash:', txHash)
 
+                   if(err === false){
+                       this.setState({txHash:txHash,transctionSuccess:true})
+                   }else{
+                       this.setState({transctionSuccess:false, transctionError:err})
+                       this.setState({isTransctionInProcess:false});
+                   }
+
                    if(txHash){
                      await web3.eth.getTransaction(txHash,async(err,data)=>{
                        //here is the data that needs to be saved..
@@ -76,6 +93,7 @@ class TransferLand extends Component {
                                     username:user.name
                                 }
                                 //calling action and sending data from here
+
                                 this.props.transferLand(transferData);
                             }
                         })
@@ -178,7 +196,16 @@ class TransferLand extends Component {
                             })}
                         </select>
                         <span className="error">{this.state.errors.land}</span>
-                        <a onClick={this.handleTransferLand} className="primary-btn header-btn text-uppercase mb-20 transfer-btn">Transfer Land</a>
+                        {this.state.isTransctionInProcess ? <Loader />:
+                            <a onClick={this.handleTransferLand} className="primary-btn header-btn text-uppercase mb-20 transfer-btn">Transfer Land</a>
+                        }
+                        <br></br>
+                        {
+                            this.state.transctionSuccess ?
+                            <a target="blank" href={"https://ropsten.etherscan.io/tx/"+this.state.txHash}>Transction Successful..!! {this.state.txHash}</a>
+                            :
+                            <span className="error">{this.state.transctionError.message}</span>
+                        }
                     </div>
                 </div>
             </div>

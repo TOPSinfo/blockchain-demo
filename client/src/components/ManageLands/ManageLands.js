@@ -8,6 +8,7 @@ import {withRouter} from 'react-router-dom'
 import {landManagment}  from "../../actions"
 import config from '../../config/accounts';
 import ReactJson from 'react-json-view'
+import Loader from "../Loader/Loader"
 
 const Tx = require('ethereumjs-tx');
 class ManageLands extends Component {
@@ -19,7 +20,8 @@ class ManageLands extends Component {
           submitted: false,
           showDetailModal:false,
           lands:[],
-          history:[]
+          history:[],
+          transctionError:{message:""}
         }
     }
 
@@ -41,16 +43,19 @@ class ManageLands extends Component {
     componentWillReceiveProps =(nextProps)=> {
       if(nextProps.landManagment.landCreated){
         this.getLands();
+        this.setState({isTransctionInProcess:false});
       }
       if(nextProps.landManagment.lands.land.length){
         this.setState({lands:nextProps.landManagment.lands.land})
       }
+
     }
     handleOnChangeInput = (e) => {
       this.setState({[e.target.id]:e.target.value})
     }
     handleAddLand = async () =>{
       this.setState({ submitted: true });
+      this.setState({isTransctionInProcess:true});
       const { landName } = this.state;
       if(landName){
         if(landName.trim() !== ''){
@@ -80,6 +85,12 @@ class ManageLands extends Component {
             await web3.eth.sendSignedTransaction(raw, async (err, txHash) => {
               console.log('err:', err, 'txHash:', txHash)
 
+              if(err === false){
+                  this.setState({txHash:txHash,transctionSuccess:true})
+              }else{
+                  this.setState({transctionSuccess:false, transctionError:err})
+                  this.setState({isTransctionInProcess:false});
+              }
               if(txHash){
                 await web3.eth.getTransaction(txHash,(err,data)=>{
                   //here is the data that needs to be saved..
@@ -91,7 +102,7 @@ class ManageLands extends Component {
                     reciept:data
                   }
                   this.props.createLand(createLandData);
-                  this.toogleAddLandModal()
+                  // this.toogleAddLandModal()
                 })
               }
             })
@@ -181,7 +192,16 @@ class ManageLands extends Component {
                           ( <Alert variant= 'warning'>Warning no leading whitespace</Alert> ) : null
 
               }
+              {this.state.isTransctionInProcess ? <Loader />:
               <a onClick={this.handleAddLand} className="primary-btn header-btn text-uppercase mb-20 login-button">Submit</a>
+            }
+            <br></br>
+            {
+                            this.state.transctionSuccess ?
+                            <a target="blank" href={"https://ropsten.etherscan.io/tx/"+this.state.txHash}>Transction Successful..!! {this.state.txHash}</a>
+                            :
+                            <span>{this.state.transctionError.message}</span>
+                        }
             </div>
 
           </Modal.Body>

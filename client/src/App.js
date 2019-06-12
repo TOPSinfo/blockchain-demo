@@ -6,6 +6,7 @@ import store from './redux_store/store'
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "./actions/auths/authActions";
+import Loader from './components/Loader/Loader'
 
 import "./App.css";
 
@@ -56,7 +57,7 @@ class App extends Component {
 
   render() {
     if (!this.state.web3) {
-      return <div>Loading ...</div>;
+      return <div className="center"><Loader /></div>;
     }
     return (
       <Routes web3={this.state.web3} contract={this.state.contract}/>
