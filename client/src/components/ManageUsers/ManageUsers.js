@@ -171,6 +171,7 @@ class ManageUsers extends Component {
 
     render() {
       const { errors, fullName, email, submitted , password, password2} = this.state;
+      console.log(errors.fullName)
         return (
             <React.Fragment>
                 <Header />
@@ -235,41 +236,42 @@ class ManageUsers extends Component {
             <form noValidate onSubmit={this.handleSubmit}>
                                     <input onChange={this.handleChange} name ="fullName" value={this.state.name} placeholder="Username" className="form-control mb-20"/>
                                     {errors.fullName.length > 0 && 
-                                      <span className='error'>{errors.fullName}</span>}
+                                      <Alert variant='light'>{errors.fullName}</Alert>
+                                      }
                                       {
                                         (submitted && !fullName) &&
-                                        <span>Name is reqiured!</span>
+                                        <Alert variant='light'>Name is reqiured!</Alert>
                                       }
                                       {
                                         (submitted && fullName && fullName.trim().length === 0) &&
-                                        <span>Avoid Space </span>
+                                        <Alert variant='light'>Avoid Space </Alert>
                                       }
                                     <input onChange={this.handleChange} name="email" type="email" value={this.state.email} placeholder="Email" className="form-control mb-20"/>
                                     {errors.email.length > 0 && 
-                                        <span className='error'>{errors.email}</span>}
+                                        <Alert variant='light'>{errors.email}</Alert>}
                                         {
                                         (submitted && !email) &&
-                                        <span>Email is required!</span>
+                                        <Alert variant='light'>Email is required!</Alert>
                                       }
                                       {
                                         (submitted && email &&  email.trim().length === 0) &&
-                                        <span>Avoid Space </span>
+                                        <Alert variant='light'>Avoid Space </Alert>
                                       }
                                     <input onChange={this.handleChange} name= "password" type="password" value={this.state.password} placeholder="Password" className="form-control mb-20"/>
                                     {errors.password.length > 0 && 
-                                        <span className='error'>{errors.password}</span>}
+                                        <Alert variant='light' >{errors.password}</Alert>}
                                         {
                                         (submitted && !password) &&
-                                        <span>Password is required!</span>
+                                        <Alert variant='light'>Password is required!</Alert>
                                       }
                                     <input onChange={this.handleChange} value={this.state.password2} name="password2" type="password" placeholder="Confirm Password" className="form-control mb-20"/>
                                     {
                                         (submitted && !password2) &&
-                                        <span>Confirm password is required!</span>
+                                        <Alert variant='light'>Confirm password is required!</Alert>
                                       }
                                       {
                                         (submitted && password !== password2) &&
-                                        <span>Password and Confirm Password does not match !</span>
+                                        <Alert variant='light'>Password and Confirm Password does not match !</Alert>
                                       }
                                     <button type='submit' className="primary-btn header-btn text-uppercase mb-20 login-button">Add User</button>
                                 </form>
