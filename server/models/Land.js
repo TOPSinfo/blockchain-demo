@@ -17,7 +17,8 @@ const LandSchema = new Schema({
         {
             OwnerAddress: { type: String, default:null},
             username: { type: String,default:null },
-            Timestamp:{ type: Date, default: Date.now }
+            Timestamp:{ type: Date, default: Date.now },
+            reciept:{type:Object}
         }
     ]
 });

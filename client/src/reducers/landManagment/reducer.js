@@ -2,28 +2,35 @@ import t from '../../actions/landManagment/types';
 
 export default function(
   state = {
-    newAccountId:null,
-    allAccounts:null,
-    newAccountReciept:null,
-    newUserAdded:false
+    newLand:{},
+    landCreated:false
   },
   action
 ) {
   switch (action.type) {
 
-    case  t.CREATE_ACCOUNT:
+    case  t.CREATE_LAND:
       if (action.payload) {
-        state.newUserAdded = true;
-        state.newAccountId = action.payload.newAccount;
-        state.newAccountReciept = action.payload.reciept;
+        state.newLand = action.payload;
+        state.landCreated = action.payload.landCreated;
       }
       return { ...state };
 
-    case t.GET_USERS:
+    case t.GET_ALL_LANDS:
       if(action.payload){
-          state.newUserAdded = false;
-          state.allAccounts = action.payload;
+          state.lands = action.payload;
+          state.landCreated = false;
       }
+      return {...state};
+
+    case t.GET_LANDS_BY_USER:
+      if(action.payload){
+          state.lands = action.payload;
+          state.landCreated = false;
+      }
+      return {...state};
+    case t.TRANSFER_LAND:
+
       return {...state};
     default:
       return state;

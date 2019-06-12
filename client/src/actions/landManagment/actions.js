@@ -4,22 +4,58 @@ import axios from "axios";
 const url ="http://localhost:5000";
 
 export const createLand = (data) => dispatch => {
-
-    console.log(data)
-    // axios
-    // .post(url+"/api/users/register", data)
-    // .then(res =>console.log("sucess"))
-    // .catch(err =>
-    //     dispatch({
-    //       type: t.GET_ERRORS,
-    //       payload: err.response.data
-    //     })
-    // );
-    // return{ type: t.CREATE_LAND, payload: {}};
+    axios
+    .post(url+"/api/lands/createland", data)
+    .then((res)=>{
+        res.landCreated=true;
+        dispatch({
+            type: t.CREATE_LAND,
+            payload: res
+        })
+    })
+    .catch(err =>
+        console.log(err)
+    );
 };
 
-export const getAllLands = (data) => {
-    const {contract} = data;
-    var allAccounts = contract.methods.getAllUsers().call();
-    return{ type: t.GET_LANDS, payload: allAccounts};
-}
+export const getAllLands = () => dispatch => {
+    axios
+    .get(url+"/api/lands/getallland")
+    .then((res)=>{
+        dispatch({
+            type: t.GET_ALL_LANDS,
+            payload: res.data
+        })
+    })
+    .catch(err =>
+        console.log(err)
+    );
+};
+
+export const getAllLandsByOwner = (data) => dispatch => {
+    axios
+    .post(url+"/api/lands/get-land-by-owner",data)
+    .then((res)=>{
+        dispatch({
+            type: t.GET_LANDS_BY_USER,
+            payload: res.data
+        })
+    })
+    .catch(err =>
+        console.log(err)
+    );
+};
+
+export const transferLand = (data) => dispatch => {
+    axios
+    .post(url+"/api/lands/transfer-land",data)
+    .then((res)=>{
+        dispatch({
+            type: t.TRANSFER_LAND,
+            payload: res.data
+        })
+    })
+    .catch(err =>
+        console.log(err)
+    );
+};

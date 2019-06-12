@@ -18,23 +18,34 @@ class ManageLands extends Component {
           showAddLandsModal:false,
           submitted: false,
           showDetailModal:false,
-          myJsonObj1:{
-              blockHash: "0x0000000000000000000000000000000000000000000000000000000000000000",
-              blockNumber: null,
-              from:"0x72019284f6eF69f9a322193c91185222e80327B4",
-              gas:8000000,
-              gasPrice:"10000000000",
-              hash:"0xc2252d5c82609f4cbf5223aa61ba643697cfda53bbb7e810a3179e79acabb734",
-              input:"0xa0d09221000000000000000000000000000000000000000000000000000000000000004000000000000000000000000072019284f6ef69f9a322193c91185222e80327b400000000000000000000000000000000000000000000000000000000000000077364666473616600000000000000000000000000000000000000000000000000",
-              nonce:12
-          }
+          lands:[],
+          history:[]
         }
     }
 
+    componentDidMount = () =>{
+      this.getLands();
+    }
+
+    getLands =() =>{
+      if(this.props.auth.user.isAdmin){
+        this.props.getAllLands()
+      }else{
+        this.props.getAllLandsByOwner({currentOwner:this.props.auth.user.name})
+      }
+    }
     toogleAddLandModal = () => {
       this.setState({showAddLandsModal:!this.state.showAddLandsModal})
     }
 
+    componentWillReceiveProps =(nextProps)=> {
+      if(nextProps.landManagment.landCreated){
+        this.getLands();
+      }
+      if(nextProps.landManagment.lands.land.length){
+        this.setState({lands:nextProps.landManagment.lands.land})
+      }
+    }
     handleOnChangeInput = (e) => {
       this.setState({[e.target.id]:e.target.value})
     }
@@ -43,17 +54,12 @@ class ManageLands extends Component {
       const { landName } = this.state;
       if(landName){
         if(landName.trim() !== ''){
-            var data={
-              landName:this.state.landName,
-              web3:this.props.web3,
-              contract:this.props.contract
-            }
 
         //blockchain part starts from here
         var {web3,contract} = this.props;
         //change the landname and Owner Addres from the Data
         var land = this.state.landName;
-        var ownerAddress = "0x72019284f6eF69f9a322193c91185222e80327B4"; //************Change this value */
+        var ownerAddress = this.props.auth.user.address;
 
         await web3.eth.getTransactionCount(config()[0].address, async (err, txCount) => {
 
@@ -62,7 +68,7 @@ class ManageLands extends Component {
               gasLimit: web3.utils.toHex(8000000), // Raise the gas limit to a much higher amount
               gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei')),
               to: config()[0].contractAddress,
-              data: contract.methods.createLand(landName,ownerAddress).encodeABI()
+              data: contract.methods.createLand(land,ownerAddress).encodeABI()
             }
 
             const tx = new Tx(txObject)
@@ -76,23 +82,30 @@ class ManageLands extends Component {
 
               if(txHash){
                 await web3.eth.getTransaction(txHash,(err,data)=>{
-
                   //here is the data that needs to be saved..
-                  console.log(data) /*************send this data to the database */
-                  console.log(this.props.auth)
+                  var createLandData={
+                    landName:land,
+                    currentOwner:this.props.auth.user.name,
+                    OwnerAddress:this.props.auth.user.address,
+                    username:this.props.auth.user.name,
+                    reciept:data
+                  }
+                  this.props.createLand(createLandData);
                   this.toogleAddLandModal()
                 })
               }
             })
           })
         //blockchain part ends from here
-
-
       }
     }
     }
 
-    toogleDetailModal = () =>{
+    toogleDetailModal = (e,index) =>{
+
+      if(typeof index !== undefined){
+        this.setState({history:this.state.lands[index].history})
+      }
       this.setState({showDetailModal:!this.state.showDetailModal});
     }
     render() {
@@ -137,13 +150,17 @@ class ManageLands extends Component {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1.</td>
-                <td>Vastrapur</td>
-                <td>Arjun</td>
-                <td>11th August,2019</td>
-                <td><button onClick={this.toogleDetailModal}>View Details</button></td>
-              </tr>
+            {this.state.lands.map((land,index)=>{
+                return(
+                  <tr key={index}>
+                    <td>{index+1}</td>
+                    <td>{land.landName}</td>
+                    <td>{land.currentOwner}</td>
+                    <td>{land.history[0].Timestamp}</td>
+                    <td><button onClick={(e) =>this.toogleDetailModal(e,index)}>View Details</button></td>
+                  </tr>
+                )
+              })}
            </tbody>
           </Table>
             </div>
@@ -169,42 +186,44 @@ class ManageLands extends Component {
 
           </Modal.Body>
         </Modal>
-      <Modal size="lg" show={this.state.showDetailModal} onHide={this.toogleDetailModal}>
+      <Modal size="lg" show={this.state.showDetailModal} onHide={(e)=>this.toogleDetailModal(e,0)}>
           <Modal.Header closeButton>
-            <Modal.Title>Land Name</Modal.Title>
+            <Modal.Title>Land Details</Modal.Title>
           </Modal.Header>
           <Modal.Body>
           <Row className="show-grid">
               <Col xs={12} md={12}>
-              <Table  striped bordered hover>
+
+            {this.state.history.map((history,index)=>{
+              return(
+                <React.Fragment key={index}>
+                  <Table  striped bordered hover>
             <thead>
               <tr>
                 <th >#</th>
-                <th>Landname</th>
-                <th>Current Owner</th>
-                <th>Created At</th>
+                <th>Owner Name</th>
+                <th>Owner Address</th>
+                <th>Transferred At</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1.</td>
-                <td>Vastrapur</td>
-                <td>Arjun</td>
-                <td>11th August,2019</td>
-              </tr>
-           </tbody>
-          </Table>
-              </Col>
-              <Col xs={6} md={4}>
-              <ReactJson src={this.state.myJsonObj1} />
+                  <tr>
+                    <td>{index+1}</td>
+                    <td>{history.username}</td>
+                    <td>{history.OwnerAddress}</td>
+                    <td>{history.Timestamp}</td>
+                  </tr>
+                  </tbody>
+                  </Table>
+                  <ReactJson src={history.reciept} />
+                </React.Fragment>
+              )
+            })}
+
+
+
               </Col>
             </Row>
-            <div className="col-lg-6 cols">
-
-            </div>
-            <div className="col-lg-6 cols">
-
-            </div>
           </Modal.Body>
         </Modal>
 
@@ -221,6 +240,8 @@ function mapStateToProps({ landManagment,auth }) {
 
 export default  withRouter ( connect(mapStateToProps,{
   createLand:landManagment.createLand,
+  getAllLands:landManagment.getAllLands,
+  getAllLandsByOwner:landManagment.getAllLandsByOwner
 })(ManageLands));
 
 
