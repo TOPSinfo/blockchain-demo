@@ -1,5 +1,5 @@
 export default {
     GET_USERS:'GET_USERS',
     GET_ERRORS: 'GET_ERRORS',
-
+    REGISTER_USER:'REGISTER_USER'
 };

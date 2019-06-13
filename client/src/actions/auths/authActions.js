@@ -4,35 +4,6 @@ import jwt_decode from "jwt-decode";
 import t from './types';
 const url ="http://localhost:5000";
 
-// Register User
-export const registerUser = (userData) => dispatch => {
-
-  const {web3} = userData;
-
-  let {address,privateKey} = web3.eth.accounts.create();
-
-  userData.address=address
-  userData.privateKey=privateKey
-  delete userData.web3
-  delete userData.contract
-
-  axios
-    .post(url+"/api/users/register", userData)
-    .then((res) =>{console.log("sucess")
-
-    dispatch({
-      type: t.REGISTER_USER,
-      payload: res
-    })
-  })
-    .catch(err =>
-        dispatch({
-          type: t.GET_ERRORS,
-          payload: err.response.data
-        })
-    );
-};
-
 // Login - get user token
 export const loginUser = userData => dispatch => {
   axios
