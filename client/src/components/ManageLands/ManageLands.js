@@ -62,6 +62,18 @@ class ManageLands extends Component {
 
         //blockchain part starts from here
         var {web3,contract} = this.props;
+
+
+        web3.eth.getBlock(
+          "pending",
+          function (error, block) {
+              if (error) {
+                  console.error(error);
+              } else {
+                console.log(block)
+                  console.log(block.transactions);
+              }
+          });
         //change the landname and Owner Addres from the Data
         var land = this.state.landName;
         var ownerAddress = this.props.auth.user.address;
@@ -236,7 +248,7 @@ class ManageLands extends Component {
               <tr>
                 <th >#</th>
                 <th>Owner Name</th>
-                <th>Owner Address</th>
+
                 <th>Transferred At</th>
               </tr>
             </thead>
@@ -244,7 +256,7 @@ class ManageLands extends Component {
                   <tr>
                     <td>{index+1}</td>
                     <td>{history.username}</td>
-                    <td>{history.OwnerAddress}</td>
+
                     <td>{history.Timestamp}</td>
                   </tr>
                   </tbody>

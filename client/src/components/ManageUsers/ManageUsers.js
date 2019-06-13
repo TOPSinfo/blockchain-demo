@@ -8,6 +8,12 @@ import {landManagment,users, loginUser}  from "../../actions"
 import './ManageUsers.css';
 
 
+
+
+const validEmailRegex =
+  RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
+
+
 class ManageUsers extends Component {
 
     constructor(props){
@@ -32,7 +38,7 @@ class ManageUsers extends Component {
     }
 
     componentDidMount = () => {
-      
+
       this.props.getAllUser();
       // if (this.props.auth.isAuthenticated) {
       //   this.props.history.push("/");
@@ -42,19 +48,18 @@ class ManageUsers extends Component {
 
 
     componentWillReceiveProps = (nextProps) =>{
-      
+
       console.log(nextProps)
       this.setState({userData:nextProps.users.allAccounts})
-      
+
+
       // if(nextProps.Users && nextProps.Users.length > 0){
       //   this.setState({
       //     userData: nextProps.Users.allAccounts
       //   })
-      // }            
+      // }
     }
 
-
-    
     validateForm = (errors) => {
       let valid = true;
       Object.values(errors).forEach(
@@ -64,7 +69,7 @@ class ManageUsers extends Component {
       return valid;
     }
 
-    validEmailRegex = 
+    validEmailRegex =
       RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
 
 
@@ -77,22 +82,22 @@ class ManageUsers extends Component {
       const { name, value } = event.target;
       this.setState({ [event.target.name]: event.target.value });
       let errors = this.state.errors;
-    
+
       switch (name) {
-        case 'fullName': 
-          errors.fullName = 
+        case 'fullName':
+          errors.fullName =
              value.length < 5
               ? 'Full Name must be 5 characters long!'
               : '';
           break;
-        case 'email': 
-          errors.email = 
+        case 'email':
+          errors.email =
             this.validEmailRegex.test(value)
               ? ''
               :value.length === 0 ? 'Email is required': 'Email is not valid!';
           break;
-        case 'password': 
-          errors.password = 
+        case 'password':
+          errors.password =
             value.length < 8
               ? 'Password must be 8 characters long!'
               :value.length === 0 ? 'Password is required': '';
@@ -100,7 +105,7 @@ class ManageUsers extends Component {
         default:
           break;
       }
-    
+
       this.setState({errors, [name]: value}, ()=> {
           console.log(errors)
       })
@@ -136,19 +141,15 @@ class ManageUsers extends Component {
               web3 :this.props.web3,
               contract:this.props.contract
             };
-  
+
             this.props.registerUser(newUser, this.props.history);
-            this.setState({
-              formSuccess: true
-            });
-            this.handleHide();
-            this.forceUpdate();
-          
+            this.toogleAddUserModal();
+
             console.log(newUser)
             console.info('Valid Form')
           }
         }
-        
+
       }else{
         console.error('Invalid Form')
         // this.setState({
@@ -158,7 +159,7 @@ class ManageUsers extends Component {
     }
     // onSubmit = e => {
     //   e.preventDefault();
-  
+
       // const newUser = {
       //   name: this.state.name,
       //   email: this.state.email,
@@ -167,16 +168,11 @@ class ManageUsers extends Component {
       //   web3 :this.props.web3,
       //   contract:this.props.contract
       // };
-  
-   
-      
+
+
+
     // };
 
-   
-
-    
-
-    
 
     render() {
       const { errors, fullName, email, submitted , password, password2, clearError, formSuccess} = this.state;
@@ -226,7 +222,7 @@ class ManageUsers extends Component {
                   return(<tr key={index}>
                     <td>{index+1}</td>
                     <td>{user.name}</td>
-                    <td>{user._id}</td>
+                    <td>{user.address}</td>
                   </tr>)
 
               })}
@@ -246,43 +242,43 @@ class ManageUsers extends Component {
             <div className="col-lg-6 cols">
             <form noValidate onSubmit={this.handleSubmit}>
                                     <input onChange={this.handleChange} name ="fullName" value={this.state.name} placeholder="Username" className="form-control mb-20"/>
-                                    { !formSuccess && !clearError &&  errors.fullName.length > 0 && 
-                                      <Alert variant='light'>{errors.fullName}</Alert>
+                                    {errors.fullName.length > 0 &&
+                                      <div>{errors.fullName}</div>
                                       }
                                       {
-                                        !formSuccess &&  !clearError  && (submitted && !fullName) && 
-                                        <Alert variant='light'>Name is reqiured!</Alert>
+                                        (submitted && !fullName) &&
+                                        <div>Name is reqiured</div>
                                       }
                                       {
-                                        !formSuccess && !clearError && (submitted && fullName && fullName.trim().length === 0) && 
-                                        <Alert variant='light'>Avoid Space </Alert>
+                                        (submitted && fullName && fullName.trim().length === 0) &&
+                                        <div>Avoid Space </div>
                                       }
                                     <input onChange={this.handleChange} name="email" type="email" value={this.state.email} placeholder="Email" className="form-control mb-20"/>
-                                    {errors.email.length > 0 && !clearError && 
-                                        <Alert variant='light'>{errors.email}</Alert>}
+                                    {errors.email.length > 0 &&
+                                        <div>{errors.email}</div>}
                                         {
-                                        (submitted && !email) && !clearError &&
-                                        <Alert variant='light'>Email is required!</Alert>
+                                        (submitted && !email) &&
+                                        <div>Email is required!</div>
                                       }
                                       {
-                                        (submitted && email &&  email.trim().length === 0) && !clearError &&
-                                        <Alert variant='light'>Avoid Space </Alert>
+                                        (submitted && email &&  email.trim().length === 0) &&
+                                        <div>Avoid Space </div>
                                       }
                                     <input onChange={this.handleChange} name= "password" type="password" value={this.state.password} placeholder="Password" className="form-control mb-20"/>
-                                    {errors.password.length > 0 && !clearError && 
-                                        <Alert variant='light' >{errors.password}</Alert>}
+                                    {errors.password.length > 0 &&
+                                        <div>{errors.password}</div>}
                                         {
-                                        (submitted && !password) && !clearError && 
-                                        <Alert variant='light'>Password is required!</Alert>
+                                        (submitted && !password) &&
+                                        <div>Password is required!</div>
                                       }
                                     <input onChange={this.handleChange} value={this.state.password2} name="password2" type="password" placeholder="Confirm Password" className="form-control mb-20"/>
                                     {
-                                        (submitted && !password2) && !clearError &&
-                                        <Alert variant='light'>Confirm password is required!</Alert>
+                                        (submitted && !password2) &&
+                                        <div>Confirm password is required!</div>
                                       }
                                       {
-                                        (submitted && password !== password2) &&  !clearError &&
-                                        <Alert variant='light'>Password and Confirm Password does not match !</Alert>
+                                        (submitted && password !== password2) &&
+                                        <div>Password and Confirm Password does not match !</div>
                                       }
                                     <button type='submit' className="primary-btn header-btn text-uppercase mb-20 login-button">Add User</button>
                                 </form>

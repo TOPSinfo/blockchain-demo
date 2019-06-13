@@ -88,7 +88,7 @@ class Login extends Component {
                           value={this.state.email}
                           error={errors.email}
                           id="email"
-                          type="email" 
+                          type="email"
                           placeholder = "Email"
                           className="form-control mb-20"/>
                           <span className="red-text">
@@ -99,7 +99,7 @@ class Login extends Component {
                           value={this.state.password}
                           error={errors.password}
                           id="password"
-                          type="password" 
+                          type="password"
                           placeholder= "password"
                           className="form-control mb-20"/>
                           <span className="red-text">
@@ -107,10 +107,6 @@ class Login extends Component {
                             {errors.passwordincorrect}
                           </span>
                         <button type= "submit" className="primary-btn header-btn text-uppercase mb-20 login-button">Login</button>
-                        <p className="black-text text-darken-1">
-                          Don't have an account?
-                            <Link to="/register">register</Link>
-                        </p>
                         </form>
                     </div>
                 </div>
