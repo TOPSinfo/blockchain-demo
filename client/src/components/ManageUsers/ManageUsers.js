@@ -8,12 +8,6 @@ import {landManagment,users, loginUser}  from "../../actions"
 import './ManageUsers.css';
 
 
-
-
-const validEmailRegex = 
-  RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
-
-
 class ManageUsers extends Component {
 
     constructor(props){
@@ -22,12 +16,19 @@ class ManageUsers extends Component {
             showAddUserModal:false,
             userData:[],
             submitted: false,
+            formSuccess: false,
+            clearError: false,
             errors: {
               fullName: '',
               email: '',
               password: '',
             }
         }
+
+        this.handleShow = this.handleShow.bind(this);
+        this.handleHide = this.handleHide.bind(this);
+
+         
     }
 
     componentDidMount = () => {
@@ -51,6 +52,8 @@ class ManageUsers extends Component {
       //   })
       // }            
     }
+
+
     
     validateForm = (errors) => {
       let valid = true;
@@ -64,10 +67,6 @@ class ManageUsers extends Component {
     validEmailRegex = 
       RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
 
-
-    toogleAddUserModal = () => {
-      this.setState({showAddUserModal:!this.state.showAddUserModal})
-    }
 
     // onChange = e => {
     //   this.setState({ [e.target.id]: e.target.value });
@@ -107,10 +106,23 @@ class ManageUsers extends Component {
       })
     }
 
+
+    handleShow() {
+      this.setState({ showAddUserModal: true,
+      formSuccess: false });
+    };
+
+    handleHide () {
+      this.setState({ showAddUserModal: false,
+      clearError: true,
+      submitted: false });
+    };
+
     handleSubmit = (event) => {
       event.preventDefault();
       this.setState({
-        submitted : true
+        submitted : true,
+        clearError: false
       })
       if(this.validateForm(this.state.errors)) {
         const { fullName, email, password, password2} = this.state;
@@ -126,7 +138,11 @@ class ManageUsers extends Component {
             };
   
             this.props.registerUser(newUser, this.props.history);
-            this.toogleAddUserModal();
+            this.setState({
+              formSuccess: true
+            });
+            this.handleHide();
+            this.forceUpdate();
           
             console.log(newUser)
             console.info('Valid Form')
@@ -135,6 +151,9 @@ class ManageUsers extends Component {
         
       }else{
         console.error('Invalid Form')
+        // this.setState({
+        //   submitted: false
+        // })
       }
     }
     // onSubmit = e => {
@@ -153,11 +172,17 @@ class ManageUsers extends Component {
       
     // };
 
+   
+
+    
+
     
 
     render() {
-      const { errors, fullName, email, submitted , password, password2} = this.state;
-      console.log(errors.fullName)
+      const { errors, fullName, email, submitted , password, password2, clearError, formSuccess} = this.state;
+      console.log("clear....................", clearError)
+      console.log("Form success....................", formSuccess)
+      console.log("Form submitted....................", submitted)
         return (
             <React.Fragment>
                 <Header />
@@ -185,7 +210,7 @@ class ManageUsers extends Component {
             <div className="row justify-content-center align-items-center flex-column pb-30">
                     <h1 className="text-white">Manage Users</h1>
                     <p className="text-white">Here you can create and manage the users of the blockchain.</p>
-                    <a onClick={this.toogleAddUserModal} className="primary-btn header-btn text-uppercase mb-20">Add User</a>
+                    <a onClick={this.handleShow} className="primary-btn header-btn text-uppercase mb-20">Add User</a>
             </div>
             <Table className="white-color" striped bordered hover>
             <thead>
@@ -213,7 +238,7 @@ class ManageUsers extends Component {
     </section>
 
 
-    <Modal show={this.state.showAddUserModal} onHide={this.toogleAddUserModal}>
+    <Modal show={this.state.showAddUserModal} onHide={this.handleHide}>
           <Modal.Header closeButton>
             <Modal.Title>Add User</Modal.Title>
           </Modal.Header>
@@ -221,42 +246,42 @@ class ManageUsers extends Component {
             <div className="col-lg-6 cols">
             <form noValidate onSubmit={this.handleSubmit}>
                                     <input onChange={this.handleChange} name ="fullName" value={this.state.name} placeholder="Username" className="form-control mb-20"/>
-                                    {errors.fullName.length > 0 && 
+                                    { !formSuccess && !clearError &&  errors.fullName.length > 0 && 
                                       <Alert variant='light'>{errors.fullName}</Alert>
                                       }
                                       {
-                                        (submitted && !fullName) &&
+                                        !formSuccess &&  !clearError  && (submitted && !fullName) && 
                                         <Alert variant='light'>Name is reqiured!</Alert>
                                       }
                                       {
-                                        (submitted && fullName && fullName.trim().length === 0) &&
+                                        !formSuccess && !clearError && (submitted && fullName && fullName.trim().length === 0) && 
                                         <Alert variant='light'>Avoid Space </Alert>
                                       }
                                     <input onChange={this.handleChange} name="email" type="email" value={this.state.email} placeholder="Email" className="form-control mb-20"/>
-                                    {errors.email.length > 0 && 
+                                    {errors.email.length > 0 && !clearError && 
                                         <Alert variant='light'>{errors.email}</Alert>}
                                         {
-                                        (submitted && !email) &&
+                                        (submitted && !email) && !clearError &&
                                         <Alert variant='light'>Email is required!</Alert>
                                       }
                                       {
-                                        (submitted && email &&  email.trim().length === 0) &&
+                                        (submitted && email &&  email.trim().length === 0) && !clearError &&
                                         <Alert variant='light'>Avoid Space </Alert>
                                       }
                                     <input onChange={this.handleChange} name= "password" type="password" value={this.state.password} placeholder="Password" className="form-control mb-20"/>
-                                    {errors.password.length > 0 && 
+                                    {errors.password.length > 0 && !clearError && 
                                         <Alert variant='light' >{errors.password}</Alert>}
                                         {
-                                        (submitted && !password) &&
+                                        (submitted && !password) && !clearError && 
                                         <Alert variant='light'>Password is required!</Alert>
                                       }
                                     <input onChange={this.handleChange} value={this.state.password2} name="password2" type="password" placeholder="Confirm Password" className="form-control mb-20"/>
                                     {
-                                        (submitted && !password2) &&
+                                        (submitted && !password2) && !clearError &&
                                         <Alert variant='light'>Confirm password is required!</Alert>
                                       }
                                       {
-                                        (submitted && password !== password2) &&
+                                        (submitted && password !== password2) &&  !clearError &&
                                         <Alert variant='light'>Password and Confirm Password does not match !</Alert>
                                       }
                                     <button type='submit' className="primary-btn header-btn text-uppercase mb-20 login-button">Add User</button>

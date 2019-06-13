@@ -121,10 +121,13 @@ class ManageLands extends Component {
     }
     render() {
       const { landName, submitted} = this.state;
+      console.log("Auhhhtttthhhhh",this.props.auth.user)
         return (
-            <React.Fragment>
-                <Header />
 
+            <React.Fragment>
+              
+                <Header />
+             
                 <section className="banner-area relative" id="home">
                 <div className="overlay overlay-bg"></div>
                 <div className="container">
@@ -137,7 +140,8 @@ class ManageLands extends Component {
                             <p className="text-white pt-20 pb-20">
                                 &nbsp;
                             </p>
-                            {/* <a href="#" className="primary-btn header-btn text-uppercase">Buy Bitcoin</a> */}
+                            
+                            <a href="#" className="primary-btn header-btn text-uppercase">Buy Bitcoin</a>
                         </div>
                     </div>
                 </div>
@@ -146,10 +150,20 @@ class ManageLands extends Component {
         <div className="container">
             <div className="convert-wrap">
             <div className="row justify-content-center align-items-center flex-column pb-30">
-                    <h1 className="text-white">View and Create New Lands</h1>
-                    <p className="text-white">Here you can Create new Lands, and Manage the Lands owned by you.</p>
-                    <a onClick={this.toogleAddLandModal} className="primary-btn header-btn text-uppercase mb-20">Add Land</a>
-                </div>
+                    
+                    {(this.props.auth.user.isAdmin)? 
+                     (<><h1 className="text-white">View and Create New Lands</h1>
+                      <p className="text-white">Here you can Create new Lands, and Manage the Lands owned by you.</p>
+                      <a onClick={this.toogleAddLandModal} className="primary-btn header-btn text-uppercase mb-20">Add Land</a></>
+                     ):
+                     (
+                      <><h1 className="text-white">View Lands</h1>
+                      <p className="text-white">Here you can view Lands owned by you.</p>
+                      </>
+                     )
+                    }
+
+                     </div>
            <Table className="white-color" striped bordered hover>
             <thead>
               <tr>

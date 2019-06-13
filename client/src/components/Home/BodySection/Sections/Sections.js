@@ -81,9 +81,9 @@ class Sections extends Component {
 									<img className="img-fluid" src={logo_b2} alt=""/>
 								</div>
 								<div className="desc">
-									<h4>View and Create New Lands</h4>
+									<h4>View Lands</h4>
 									<p>
-										Here you can Create new Lands, and Manage the Lands owned by you.
+										Here you can view Lands owned by you.
 									</p>
 
 								</div>
