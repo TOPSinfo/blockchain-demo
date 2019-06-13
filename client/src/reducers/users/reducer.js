@@ -3,7 +3,7 @@ import t from '../../actions/users/types';
 export default function(
   state = {
     newAccountId:null,
-    allAccounts:null,
+    allAccounts:[],
     newAccountReciept:null,
     newUserAdded:false
   },
@@ -11,11 +11,13 @@ export default function(
 ) {
   switch (action.type) {
 
-    case  t.CREATE_ACCOUNT:
+    case  t.REGISTER_USER:
       if (action.payload) {
+        // state.allAccounts
         state.newUserAdded = true;
         state.newAccountId = action.payload.newAccount;
         state.newAccountReciept = action.payload.reciept;
+        
       }
       return { ...state };
 

@@ -45,13 +45,10 @@ class ManageUsers extends Component {
       // }
     }
 
-
-
     componentWillReceiveProps = (nextProps) =>{
 
       console.log(nextProps)
       this.setState({userData:nextProps.users.allAccounts})
-
 
       // if(nextProps.Users && nextProps.Users.length > 0){
       //   this.setState({
@@ -111,6 +108,11 @@ class ManageUsers extends Component {
       })
     }
 
+    toogleAddUserModal(){
+      this.setState({
+        showAddUserModal:!this.state.showAddUserModal
+      })
+    }
 
     handleShow() {
       this.setState({ showAddUserModal: true,
@@ -176,9 +178,7 @@ class ManageUsers extends Component {
 
     render() {
       const { errors, fullName, email, submitted , password, password2, clearError, formSuccess} = this.state;
-      console.log("clear....................", clearError)
-      console.log("Form success....................", formSuccess)
-      console.log("Form submitted....................", submitted)
+      console.log("clear....................", this.state.userData)
         return (
             <React.Fragment>
                 <Header />
@@ -217,7 +217,8 @@ class ManageUsers extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.userData && this.state.userData.map((user,index)=>{
+              {
+                this.state.userData && this.state.userData.map((user,index)=>{
 
                   return(<tr key={index}>
                     <td>{index+1}</td>
@@ -302,8 +303,9 @@ function mapStateToProps({ auth,errors,users }) {
 
 
 export default  withRouter ( connect(mapStateToProps,{
-  registerUser:loginUser.registerUser,
-  getAllUser:users.getAllUser
+  // registerUser:loginUser.registerUser,
+  getAllUser:users.getAllUser,
+  registerUser:users.registerUser
 })(ManageUsers));
 
 
