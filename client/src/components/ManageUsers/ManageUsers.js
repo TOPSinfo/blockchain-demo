@@ -10,7 +10,7 @@ import './ManageUsers.css';
 
 
 
-const validEmailRegex = 
+const validEmailRegex =
   RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
 
 
@@ -31,7 +31,7 @@ class ManageUsers extends Component {
     }
 
     componentDidMount = () => {
-      
+
       this.props.getAllUser();
       // if (this.props.auth.isAuthenticated) {
       //   this.props.history.push("/");
@@ -41,17 +41,18 @@ class ManageUsers extends Component {
 
 
     componentWillReceiveProps = (nextProps) =>{
-      
+
       console.log(nextProps)
       this.setState({userData:nextProps.users.allAccounts})
-      
+
+
       // if(nextProps.Users && nextProps.Users.length > 0){
       //   this.setState({
       //     userData: nextProps.Users.allAccounts
       //   })
-      // }            
+      // }
     }
-    
+
     validateForm = (errors) => {
       let valid = true;
       Object.values(errors).forEach(
@@ -61,7 +62,7 @@ class ManageUsers extends Component {
       return valid;
     }
 
-    validEmailRegex = 
+    validEmailRegex =
       RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
 
 
@@ -78,22 +79,22 @@ class ManageUsers extends Component {
       const { name, value } = event.target;
       this.setState({ [event.target.name]: event.target.value });
       let errors = this.state.errors;
-    
+
       switch (name) {
-        case 'fullName': 
-          errors.fullName = 
+        case 'fullName':
+          errors.fullName =
              value.length < 5
               ? 'Full Name must be 5 characters long!'
               : '';
           break;
-        case 'email': 
-          errors.email = 
+        case 'email':
+          errors.email =
             this.validEmailRegex.test(value)
               ? ''
               :value.length === 0 ? 'Email is required': 'Email is not valid!';
           break;
-        case 'password': 
-          errors.password = 
+        case 'password':
+          errors.password =
             value.length < 8
               ? 'Password must be 8 characters long!'
               :value.length === 0 ? 'Password is required': '';
@@ -101,7 +102,7 @@ class ManageUsers extends Component {
         default:
           break;
       }
-    
+
       this.setState({errors, [name]: value}, ()=> {
           console.log(errors)
       })
@@ -124,22 +125,22 @@ class ManageUsers extends Component {
               web3 :this.props.web3,
               contract:this.props.contract
             };
-  
+
             this.props.registerUser(newUser, this.props.history);
             this.toogleAddUserModal();
-          
+
             console.log(newUser)
             console.info('Valid Form')
           }
         }
-        
+
       }else{
         console.error('Invalid Form')
       }
     }
     // onSubmit = e => {
     //   e.preventDefault();
-  
+
       // const newUser = {
       //   name: this.state.name,
       //   email: this.state.email,
@@ -148,12 +149,12 @@ class ManageUsers extends Component {
       //   web3 :this.props.web3,
       //   contract:this.props.contract
       // };
-  
-   
-      
+
+
+
     // };
 
-    
+
 
     render() {
       const { errors, fullName, email, submitted , password, password2} = this.state;
@@ -221,43 +222,43 @@ class ManageUsers extends Component {
             <div className="col-lg-6 cols">
             <form noValidate onSubmit={this.handleSubmit}>
                                     <input onChange={this.handleChange} name ="fullName" value={this.state.name} placeholder="Username" className="form-control mb-20"/>
-                                    {errors.fullName.length > 0 && 
-                                      <Alert variant='light'>{errors.fullName}</Alert>
+                                    {errors.fullName.length > 0 &&
+                                      <div>{errors.fullName}</div>
                                       }
                                       {
                                         (submitted && !fullName) &&
-                                        <Alert variant='light'>Name is reqiured!</Alert>
+                                        <div>Name is reqiured</div>
                                       }
                                       {
                                         (submitted && fullName && fullName.trim().length === 0) &&
-                                        <Alert variant='light'>Avoid Space </Alert>
+                                        <div>Avoid Space </div>
                                       }
                                     <input onChange={this.handleChange} name="email" type="email" value={this.state.email} placeholder="Email" className="form-control mb-20"/>
-                                    {errors.email.length > 0 && 
-                                        <Alert variant='light'>{errors.email}</Alert>}
+                                    {errors.email.length > 0 &&
+                                        <div>{errors.email}</div>}
                                         {
                                         (submitted && !email) &&
-                                        <Alert variant='light'>Email is required!</Alert>
+                                        <div>Email is required!</div>
                                       }
                                       {
                                         (submitted && email &&  email.trim().length === 0) &&
-                                        <Alert variant='light'>Avoid Space </Alert>
+                                        <div>Avoid Space </div>
                                       }
                                     <input onChange={this.handleChange} name= "password" type="password" value={this.state.password} placeholder="Password" className="form-control mb-20"/>
-                                    {errors.password.length > 0 && 
-                                        <Alert variant='light' >{errors.password}</Alert>}
+                                    {errors.password.length > 0 &&
+                                        <div>{errors.password}</div>}
                                         {
                                         (submitted && !password) &&
-                                        <Alert variant='light'>Password is required!</Alert>
+                                        <div>Password is required!</div>
                                       }
                                     <input onChange={this.handleChange} value={this.state.password2} name="password2" type="password" placeholder="Confirm Password" className="form-control mb-20"/>
                                     {
                                         (submitted && !password2) &&
-                                        <Alert variant='light'>Confirm password is required!</Alert>
+                                        <div>Confirm password is required!</div>
                                       }
                                       {
                                         (submitted && password !== password2) &&
-                                        <Alert variant='light'>Password and Confirm Password does not match !</Alert>
+                                        <div>Password and Confirm Password does not match !</div>
                                       }
                                     <button type='submit' className="primary-btn header-btn text-uppercase mb-20 login-button">Add User</button>
                                 </form>

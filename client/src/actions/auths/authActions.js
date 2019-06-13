@@ -16,10 +16,15 @@ export const registerUser = (userData) => dispatch => {
   delete userData.web3
   delete userData.contract
 
-console.log("userData..................",userData)
   axios
     .post(url+"/api/users/register", userData)
-    .then(res =>console.log("sucess"))
+    .then((res) =>{console.log("sucess")
+
+    dispatch({
+      type: t.REGISTER_USER,
+      payload: res
+    })
+  })
     .catch(err =>
         dispatch({
           type: t.GET_ERRORS,
@@ -71,3 +76,5 @@ export const logoutUser = () =>  dispatch =>{
   // Set current user to empty object {} which will set isAuthenticated to false
   dispatch(setCurrentUser({}));
 };
+
+

@@ -21,6 +21,11 @@ export default function(state = initialState, action) {
         ...state,
         loading: true
       };
+    case t.REGISTER_USER:
+      return{
+        ...state,
+        userRegistered:true
+      }
     default:
       return state;
   }
