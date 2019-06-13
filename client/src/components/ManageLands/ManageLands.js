@@ -9,6 +9,8 @@ import {landManagment}  from "../../actions"
 import config from '../../config/accounts';
 import ReactJson from 'react-json-view'
 import Loader from "../Loader/Loader"
+import Moment from 'react-moment';
+import './ManageLands.css';
 
 const Tx = require('ethereumjs-tx');
 class ManageLands extends Component {
@@ -37,6 +39,7 @@ class ManageLands extends Component {
       }
     }
     toogleAddLandModal = () => {
+      this.setState({transctionError:{message:""}})
       this.setState({showAddLandsModal:!this.state.showAddLandsModal})
     }
 
@@ -55,11 +58,11 @@ class ManageLands extends Component {
     }
     handleAddLand = async () =>{
       this.setState({ submitted: true });
-      this.setState({isTransctionInProcess:true});
+
       const { landName } = this.state;
       if(landName){
         if(landName.trim() !== ''){
-
+          this.setState({isTransctionInProcess:true});
         //blockchain part starts from here
         var {web3,contract} = this.props;
 
@@ -137,9 +140,9 @@ class ManageLands extends Component {
         return (
 
             <React.Fragment>
-              
+
                 <Header />
-             
+
                 <section className="banner-area relative" id="home">
                 <div className="overlay overlay-bg"></div>
                 <div className="container">
@@ -152,7 +155,7 @@ class ManageLands extends Component {
                             <p className="text-white pt-20 pb-20">
                                 &nbsp;
                             </p>
-                            
+
                             <a href="#" className="primary-btn header-btn text-uppercase">Buy Bitcoin</a>
                         </div>
                     </div>
@@ -162,8 +165,8 @@ class ManageLands extends Component {
         <div className="container">
             <div className="convert-wrap">
             <div className="row justify-content-center align-items-center flex-column pb-30">
-                    
-                    {(this.props.auth.user.isAdmin)? 
+
+                    {(this.props.auth.user.isAdmin)?
                      (<><h1 className="text-white">View and Create New Lands</h1>
                       <p className="text-white">Here you can Create new Lands, and Manage the Lands owned by you.</p>
                       <a onClick={this.toogleAddLandModal} className="primary-btn header-btn text-uppercase mb-20">Add Land</a></>
@@ -193,8 +196,12 @@ class ManageLands extends Component {
                     <td>{index+1}</td>
                     <td>{land.landName}</td>
                     <td>{land.currentOwner}</td>
-                    <td>{land.history[0].Timestamp}</td>
-                    <td><button onClick={(e) =>this.toogleDetailModal(e,index)}>View Details</button></td>
+                    <td>
+                      <Moment format="HH:mm DD/MM/YYYY">
+                        {land.history[0].Timestamp}
+                      </Moment>
+                    </td>
+                    <td className="detail-button" onClick={(e) =>this.toogleDetailModal(e,index)}>View Details</td>
                   </tr>
                 )
               })}
@@ -208,18 +215,24 @@ class ManageLands extends Component {
             <Modal.Title>Add Land</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <div className="col-lg-6 cols">
-              <input type="text" onChange={this.handleOnChangeInput}  id="landName" placeholder="Land Name" className="form-control mb-20"/>
+          <Row className="show-grid">
+
+            <Col xs={12} md={12}>
+              <input type="text" onChange={this.handleOnChangeInput}  id="landName" placeholder="Land Name" className="form-control"/>
+              </Col>
+              <Col xs={12} md={12}>
               {
                 (submitted && !landName) ?
-                  (<Alert variant='warning'>Landname is required</Alert>) :
+                  (<span>Landname is required</span>) :
 
                   (submitted && landName.trim().length === 0) ?
-                          ( <Alert variant= 'warning'>Warning no leading whitespace</Alert> ) : null
+                          ( <span>Warning no leading whitespace</span> ) : null
 
               }
-              {this.state.isTransctionInProcess ? <Loader />:
-              <a onClick={this.handleAddLand} className="primary-btn header-btn text-uppercase mb-20 login-button">Submit</a>
+              </Col>
+              <Col xs={12} md={12}>
+              {this.state.isTransctionInProcess ? <div className="add-land-loader"><Loader /></div>:
+              <a onClick={this.handleAddLand} className="primary-btn header-btn text-uppercase mb-20 add-land">Add Land</a>
             }
             <br></br>
             {
@@ -228,8 +241,8 @@ class ManageLands extends Component {
                             :
                             <span>{this.state.transctionError.message}</span>
                         }
-            </div>
-
+            </Col>
+          </Row>
           </Modal.Body>
         </Modal>
       <Modal size="lg" show={this.state.showDetailModal} onHide={(e)=>this.toogleDetailModal(e,0)}>
@@ -257,11 +270,15 @@ class ManageLands extends Component {
                     <td>{index+1}</td>
                     <td>{history.username}</td>
 
-                    <td>{history.Timestamp}</td>
+                    <td>
+                      <Moment format="HH:mm DD/MM/YYYY">
+                        {history.Timestamp}
+                      </Moment>
+                    </td>
                   </tr>
                   </tbody>
                   </Table>
-                  <ReactJson src={history.reciept} />
+                  <ReactJson collapsed={true}  collapseStringsAfterLength={65} src={history.reciept} />
                 </React.Fragment>
               )
             })}

@@ -1,0 +1,28 @@
+.detail-button{
+    text-decoration: underline !important;
+    cursor: pointer;
+}
+
+.add-land{
+    margin-top: 20px;
+    margin-left: 65%;
+    text-align: center !important;
+    color: #fff !important;
+    display: inline-block;
+}
+
+.add-land:hover{
+    margin-top: 20px;
+    margin-left: 65%;
+    text-align: center !important;
+    color: #000 !important;
+    display: inline-block;
+}
+
+.add-land-loader{
+    margin-top: 20px;
+    margin-left: 75%;
+    text-align: center !important;
+    color: #fff !important;
+    display: inline-block;
+}

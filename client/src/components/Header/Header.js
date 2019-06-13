@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 
 import logo from '../../asserts/img/logo.png';
 import {withRouter} from 'react-router-dom';
+import "./Header.css";
 
 class Header extends Component {
 
@@ -24,7 +25,7 @@ class Header extends Component {
             <div className="container">
                 <div className="row align-items-center justify-content-between d-flex">
                 <div id="logo">
-                    <a onClick={(e)=> this.handleComponentChange(e,"/")}><img src={logo} alt="" title="" /></a>
+                    <a className="land-logo" onClick={(e)=> this.handleComponentChange(e,"/")}><strong>Land Managment System</strong></a>
                 </div>
                 <nav id="nav-menu-container">
                     <ul className="nav-menu">
