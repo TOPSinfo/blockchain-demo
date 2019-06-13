@@ -116,7 +116,18 @@ class ManageUsers extends Component {
 
     handleShow() {
       this.setState({ showAddUserModal: true,
-      formSuccess: false });
+      formSuccess: false,
+      submitted: false,
+      formSuccess: false,
+      fullName: '',
+      email: '',
+      password: '',
+      password2: '',
+      errors: {
+        fullName: '',
+        email: '',
+        password: '',
+      } });
     };
 
     handleHide () {
