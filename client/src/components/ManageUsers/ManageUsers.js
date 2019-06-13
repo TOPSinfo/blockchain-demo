@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Header from "../Header/Header";
-import { Alert } from 'react-bootstrap';
-import {Modal, Table} from "react-bootstrap";
+// import { Alert } from 'react-bootstrap';
+import {Modal, Table, Alert, Row, Col} from "react-bootstrap";
 import { connect } from 'react-redux';
 import { Link, withRouter } from "react-router-dom";
 import {landManagment,users, loginUser}  from "../../actions"
@@ -22,8 +22,6 @@ class ManageUsers extends Component {
             showAddUserModal:false,
             userData:[],
             submitted: false,
-            formSuccess: false,
-            clearError: false,
             errors: {
               fullName: '',
               email: '',
@@ -116,7 +114,6 @@ class ManageUsers extends Component {
 
     handleShow() {
       this.setState({ showAddUserModal: true,
-      formSuccess: false,
       submitted: false,
       formSuccess: false,
       fullName: '',
@@ -217,7 +214,7 @@ class ManageUsers extends Component {
             <div className="row justify-content-center align-items-center flex-column pb-30">
                     <h1 className="text-white">Manage Users</h1>
                     <p className="text-white">Here you can create and manage the users of the blockchain.</p>
-                    <a onClick={this.handleShow} className="primary-btn header-btn text-uppercase mb-20">Add User</a>
+                    <a onClick={this.handleShow} className="primary-btn header-btn text-uppercase mb-20 ">Add User</a>
             </div>
             <Table className="white-color" striped bordered hover>
             <thead>
@@ -251,11 +248,15 @@ class ManageUsers extends Component {
             <Modal.Title>Add User</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <div className="col-lg-6 cols">
+          <Row className="show-grid">
             <form noValidate onSubmit={this.handleSubmit}>
-                                    <input onChange={this.handleChange} name ="fullName" value={this.state.name} placeholder="Username" className="form-control mb-20"/>
+              
+                                    <Col xs={12} md={12}> 
+                                    <input onChange={this.handleChange} name ="fullName" value={this.state.name} placeholder="Username" className="form-control mb-05"/>
+                                    </Col>
+                                    <Col xs={12} md={12}> 
                                     {errors.fullName.length > 0 &&
-                                      <div>{errors.fullName}</div>
+                                      <span>{errors.fullName}</span>
                                       }
                                       {
                                         (submitted && !fullName) &&
@@ -265,7 +266,11 @@ class ManageUsers extends Component {
                                         (submitted && fullName && fullName.trim().length === 0) &&
                                         <div>Avoid Space </div>
                                       }
-                                    <input onChange={this.handleChange} name="email" type="email" value={this.state.email} placeholder="Email" className="form-control mb-20"/>
+                                      </Col>
+                                      <Col xs={12} md={12}> 
+                                    <input onChange={this.handleChange} name="email" type="email" value={this.state.email} placeholder="Email" className="form-control mb-05"/>
+                                    </Col>
+                                    <Col xs={12} md={12}> 
                                     {errors.email.length > 0 &&
                                         <div>{errors.email}</div>}
                                         {
@@ -276,15 +281,23 @@ class ManageUsers extends Component {
                                         (submitted && email &&  email.trim().length === 0) &&
                                         <div>Avoid Space </div>
                                       }
-                                    <input onChange={this.handleChange} name= "password" type="password" value={this.state.password} placeholder="Password" className="form-control mb-20"/>
+                                      </Col>
+                                      <Col xs={12} md={12}> 
+                                    <input onChange={this.handleChange} name= "password" type="password" value={this.state.password} placeholder="Password" className="form-control mb-05"/>
+                                    </Col>
+                                    <Col xs={12} md={12}> 
                                     {errors.password.length > 0 &&
                                         <div>{errors.password}</div>}
                                         {
                                         (submitted && !password) &&
                                         <div>Password is required!</div>
                                       }
-                                    <input onChange={this.handleChange} value={this.state.password2} name="password2" type="password" placeholder="Confirm Password" className="form-control mb-20"/>
-                                    {
+                                      </Col>
+                                      <Col xs={12} md={12}> 
+                                    <input onChange={this.handleChange} value={this.state.password2} name="password2" type="password" placeholder="Confirm Password" className="form-control mb-05"/>
+                                     </Col>
+                                     <Col xs={12} md={12}> 
+                                     {
                                         (submitted && !password2) &&
                                         <div>Confirm password is required!</div>
                                       }
@@ -292,9 +305,10 @@ class ManageUsers extends Component {
                                         (submitted && password !== password2) &&
                                         <div>Password and Confirm Password does not match !</div>
                                       }
-                                    <button type='submit' className="primary-btn header-btn text-uppercase mb-20 login-button">Add User</button>
+                                      </Col>
+                                    <button type='submit' className="primary-btn header-btn text-uppercase mb-05 login-button add-land">Add</button>
                                 </form>
-            </div>
+           </Row>
 
           </Modal.Body>
         </Modal>
