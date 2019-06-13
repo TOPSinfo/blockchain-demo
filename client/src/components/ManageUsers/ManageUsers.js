@@ -202,7 +202,7 @@ class ManageUsers extends Component {
                   return(<tr key={index}>
                     <td>{index+1}</td>
                     <td>{user.name}</td>
-                    <td>{user._id}</td>
+                    <td>{user.address}</td>
                   </tr>)
 
               })}
