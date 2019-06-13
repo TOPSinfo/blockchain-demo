@@ -9,15 +9,17 @@ export default function(
   },
   action
 ) {
+  let array=state.allAccounts
+  array.push(action.payload)
+  console.log("array...........",array)
   switch (action.type) {
 
     case  t.REGISTER_USER:
       if (action.payload) {
-        // state.allAccounts
         state.newUserAdded = true;
         state.newAccountId = action.payload.newAccount;
         state.newAccountReciept = action.payload.reciept;
-        
+        state.allAccounts=array
       }
       return { ...state };
 
