@@ -4,18 +4,11 @@ import { Alert } from 'react-bootstrap';
 import {Modal, Table} from "react-bootstrap";
 import { connect } from 'react-redux';
 import { Link, withRouter } from "react-router-dom";
-import {landManagment,getUsers, loginUser}  from "../../actions"
+import {landManagment,users, loginUser}  from "../../actions"
 import './ManageUsers.css';
 
 
-const validateForm = (errors) => {
-  let valid = true;
-  Object.values(errors).forEach(
-    // if we have an error string set valid to false
-    (val) => val.length > 0 && (valid = false)
-  );
-  return valid;
-}
+
 
 const validEmailRegex = 
   RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
@@ -38,46 +31,39 @@ class ManageUsers extends Component {
     }
 
     componentDidMount = () => {
-
-
+      
+      this.props.getAllUser();
       // if (this.props.auth.isAuthenticated) {
       //   this.props.history.push("/");
       // }
     }
 
+
+
     componentWillReceiveProps = (nextProps) =>{
+      
       console.log(nextProps)
-
-      // if (nextProps.errors) {
+      this.setState({userData:nextProps.users.allAccounts})
+      
+      // if(nextProps.Users && nextProps.Users.length > 0){
       //   this.setState({
-      //     errors: nextProps.errors
-      //   });
-      // }
-      if(nextProps.Users && nextProps.Users.length > 0){
-        this.setState({
-          userData: nextProps.Users
-        })
-      }
-
-      var userData = [];
-      var {allAccounts} = nextProps.Users;
-      // allAccounts.map((users,index)=>{
-      // console.log("users..................",users)
-      // })
-      // allAccounts.then((allAccounts)=>{
-      //   allAccounts[1].map((username,index)=>{
-      //       userData[index] = {}
-      //       userData[index].username = username
+      //     userData: nextProps.Users.allAccounts
       //   })
-
-      //   allAccounts[0].map((accountId,index)=>{
-      //      userData[index].address = accountId
-      //  })
-      //  this.setState({userData:userData})
-      // }).catch((err)=>{
-      //     console.log(err)
-      // })
+      // }            
     }
+    
+    validateForm = (errors) => {
+      let valid = true;
+      Object.values(errors).forEach(
+        // if we have an error string set valid to false
+        (val) => val.length > 0 && (valid = false)
+      );
+      return valid;
+    }
+
+    validEmailRegex = 
+      RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
+
 
     toogleAddUserModal = () => {
       this.setState({showAddUserModal:!this.state.showAddUserModal})
@@ -102,7 +88,7 @@ class ManageUsers extends Component {
           break;
         case 'email': 
           errors.email = 
-            validEmailRegex.test(value)
+            this.validEmailRegex.test(value)
               ? ''
               :value.length === 0 ? 'Email is required': 'Email is not valid!';
           break;
@@ -126,7 +112,7 @@ class ManageUsers extends Component {
       this.setState({
         submitted : true
       })
-      if(validateForm(this.state.errors)) {
+      if(this.validateForm(this.state.errors)) {
         const { fullName, email, password, password2} = this.state;
         if(fullName && email){
           if(fullName.trim().length > 0  && email  && password === password2){
@@ -285,15 +271,18 @@ class ManageUsers extends Component {
 }
 
 
-const mapStateToProps = state => ({
-  auth: state.auth,
-  errors: state.errors,
-  Users: state.landManagment.allAccounts
-});
+function mapStateToProps({ auth,errors,users }) {
+  return {
+    auth: auth,
+    errors: errors,
+    users
+  }
+}
+
 
 export default  withRouter ( connect(mapStateToProps,{
   registerUser:loginUser.registerUser,
-
+  getAllUser:users.getAllUser
 })(ManageUsers));
 
 
