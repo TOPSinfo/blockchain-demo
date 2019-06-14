@@ -8,7 +8,7 @@ const initialState = {
   loading: false
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   switch (action.type) {
     case t.SET_CURRENT_USER:
       return {
@@ -22,9 +22,9 @@ export default function(state = initialState, action) {
         loading: true
       };
     case t.REGISTER_USER:
-      return{
+      return {
         ...state,
-        userRegistered:true
+        userRegistered: true
       }
     default:
       return state;

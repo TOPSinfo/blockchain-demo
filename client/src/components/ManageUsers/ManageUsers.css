@@ -19,6 +19,15 @@
     display: inline-block;
 }
 
+
+.add-land1{
+    margin-top: 05px;
+    margin-left: 55%;
+    text-align: center !important;
+    color: #fff !important;
+    display: inline-block;
+}
+
 .add-land:hover{
     margin-top: 20px;
     margin-left: 65%;
@@ -33,4 +42,13 @@
     text-align: center !important;
     color: #fff !important;
     display: inline-block;
+}
+
+
+.add-span {
+    color: red;
+}
+
+.add-border-color{
+    border-color: red;
 }

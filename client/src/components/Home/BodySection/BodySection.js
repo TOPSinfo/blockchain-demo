@@ -3,7 +3,7 @@ import Sections from './Sections/Sections';
 
 class BodySection extends Component {
 
- 
+
 
     render() {
         return (
@@ -25,7 +25,7 @@ class BodySection extends Component {
                         </div>
                     </div>
                 </section>
-                <Sections/>
+                <Sections />
             </React.Fragment>
         );
     }

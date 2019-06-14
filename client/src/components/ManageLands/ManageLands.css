@@ -26,3 +26,11 @@
     color: #fff !important;
     display: inline-block;
 }
+
+.add-span {
+    color: red;
+}
+
+.add-border-color{
+    border-color: red;
+}
