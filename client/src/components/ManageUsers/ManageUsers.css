@@ -26,6 +26,9 @@
     text-align: center !important;
     color: #fff !important;
     display: inline-block;
+    padding-right: 30px;
+    float: right;
+    margin-right: 15px;
 }
 
 .add-land:hover{
@@ -51,4 +54,10 @@
 
 .add-border-color{
     border-color: red;
+}
+.justify-content-center form {
+    width: 100%;
+}
+.justify-content-center form .col-12 {
+    margin-bottom: 10px;
 }

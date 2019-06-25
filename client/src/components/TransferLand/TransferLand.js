@@ -196,15 +196,19 @@ class TransferLand extends Component {
                                         })}
                                     </select>
                                     <span className="error">{this.state.errors.land}</span>
-                                    {this.state.isTransctionInProcess ? <Loader /> :
+                                    {this.state.isTransctionInProcess ?
+                                    <div className="transfer-land-loader">
+                                    <Loader />
+                                    </div>
+                                    :
                                         <a onClick={this.handleTransferLand} className="primary-btn header-btn text-uppercase mb-20 transfer-btn">Transfer Land</a>
                                     }
                                     <br></br>
                                     {
                                         this.state.transctionSuccess ?
-                                            <a target="blank" href={"https://ropsten.etherscan.io/tx/" + this.state.txHash}>Transction Successful..!! {this.state.txHash}</a>
+                                            <a className="sucess-msg" target="blank" href={"https://ropsten.etherscan.io/tx/" + this.state.txHash}><span>Transction Successful..!!</span> {this.state.txHash}</a>
                                             :
-                                            <span className="error">{this.state.transctionError.message}</span>
+                                            <span className="error sucess-msg">{this.state.transctionError.message}</span>
                                     }
                                 </div>
                             </div>

@@ -208,9 +208,9 @@ class ManageUsers extends Component {
             <Modal.Title>Add User</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <Container>
+
                         <Row className="justify-content-center">
-              
+
               <form noValidate onSubmit={this.handleSubmit}>
 
                 <Col xs={12} md={12}>
@@ -270,9 +270,8 @@ class ManageUsers extends Component {
                 </Col>
                 <button type='submit' className="primary-btn header-btn text-uppercase mb-05 login-button add-land1">Add</button>
               </form>
-              
+
             </Row>
-            </Container>
           </Modal.Body>
         </Modal>
       </React.Fragment>

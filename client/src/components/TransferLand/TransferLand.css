@@ -9,3 +9,16 @@
 .error{
     color: #fff;
 }
+.sucess-msg {
+    display: inline-block;
+    font-weight: 500;
+    color: #fff;
+}
+.transfer-land-loader {
+    float: right;
+    margin-top: 10px;
+}
+.custom-select {
+    appearance: none;
+    -webkit-appearance: none;
+}

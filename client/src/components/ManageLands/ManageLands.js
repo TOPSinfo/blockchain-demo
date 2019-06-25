@@ -222,7 +222,7 @@ class ManageLands extends Component {
               <Col xs={12} md={12}>
                 {
                   (submitted && !landName) ?
-                    (<span className="add-span">Landname is required</span>) :
+                    (<span className="add-span">Land name is required.</span>) :
 
                     (submitted && landName.trim().length === 0) ?
                       (<span className="add-span">Warning no leading whitespace</span>) : null
@@ -236,9 +236,9 @@ class ManageLands extends Component {
                 <br></br>
                 {
                   this.state.transctionSuccess ?
-                    <a target="blank" href={"https://ropsten.etherscan.io/tx/" + this.state.txHash}>Transction Successful..!!{this.state.txHash}</a>
+                    <a className="common-word-break" target="blank" href={"https://ropsten.etherscan.io/tx/" + this.state.txHash}>Transction Successful..!! <br></br>{this.state.txHash}</a>
                     :
-                    <span>{this.state.transctionError.message}</span>
+                    <span className="clr-red">{this.state.transctionError.message}</span>
                 }
               </Col>
             </Row>
@@ -266,7 +266,7 @@ class ManageLands extends Component {
                         </thead>
                         <tbody>
                           <tr>
-                            <td>{index + 1}</td>  
+                            <td>{index + 1}</td>
                             <td>{history.username}</td>
 
                             <td>
@@ -277,7 +277,9 @@ class ManageLands extends Component {
                           </tr>
                         </tbody>
                       </Table>
-                      <ReactJson collapsed={true} collapseStringsAfterLength={65} src={history.reciept} />
+                      <div className="land-detial-break-all">
+                        <ReactJson collapsed={true} collapseStringsAfterLength={65} src={history.reciept} />
+                      </div>
                     </React.Fragment>
                   )
                 })}

@@ -34,3 +34,22 @@
 .add-border-color{
     border-color: red;
 }
+.add-land {
+    padding-right: 30px;
+    float: right;
+}
+.common-word-break {
+    word-break: break-all;
+    display: inline-block;
+    font-weight: 400;
+}
+.clr-red {
+    font-weight: 400;
+    color: #f00;
+}
+.detail-button {
+    font-weight: 500;
+}
+.land-detial-break-all {
+    word-break: break-all;
+}
