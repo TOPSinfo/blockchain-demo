@@ -28,15 +28,15 @@ class TransferLand extends Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        if (nextProps.users.allAccounts.length) {
+        if (nextProps && nextProps.users && nextProps.users.allAccounts.length) {
             this.setState({ users: nextProps.users.allAccounts })
         }
-        if (nextProps.landManagment.lands.land.length > 0) {
+        if (nextProps && nextProps.landManagment && nextProps.landManagment.lands.land.length > 0) {
             this.setState({ lands: nextProps.landManagment.lands.land })
         } else {
             this.setState({ lands: [] })
         }
-        if (nextProps.landManagment.landTransfered) {
+        if (nextProps && nextProps.landManagment && nextProps.landManagment.landTransfered) {
             this.setState({ isTransctionInProcess: false });
             this.props.getAllLandsByOwner({ currentOwner: this.props.auth.user.name })
         }
@@ -57,7 +57,7 @@ class TransferLand extends Component {
 
                 const txObject = {
                     nonce: web3.utils.toHex(txCount),
-                    gasLimit: web3.utils.toHex(8000000), // Raise the gas limit to a much higher amount
+                    gasLimit: web3.utils.toHex(3000000), // Raise the gas limit to a much higher amount
                     gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei')),
                     to: config()[0].contractAddress,
                     data: contract.methods.transferLand(fromAddress, toAddress, landId).encodeABI()
@@ -155,10 +155,10 @@ class TransferLand extends Component {
                                 {/* <h5 className="text-white text-uppercase"></h5> */}
                                 <h1 className="text-uppercase">
                                     &nbsp;
-                            </h1>
+                                </h1>
                                 <p className="text-white pt-20 pb-20">
                                     &nbsp;
-                            </p>
+                                </p>
                                 {/* <a href="#" className="primary-btn header-btn text-uppercase">Buy Bitcoin</a> */}
                             </div>
                         </div>
@@ -197,10 +197,10 @@ class TransferLand extends Component {
                                     </select>
                                     <span className="error">{this.state.errors.land}</span>
                                     {this.state.isTransctionInProcess ?
-                                    <div className="transfer-land-loader">
-                                    <Loader />
-                                    </div>
-                                    :
+                                        <div className="transfer-land-loader">
+                                            <Loader />
+                                        </div>
+                                        :
                                         <a onClick={this.handleTransferLand} className="primary-btn header-btn text-uppercase mb-20 transfer-btn">Transfer Land</a>
                                     }
                                     <br></br>
@@ -208,7 +208,7 @@ class TransferLand extends Component {
                                         this.state.transctionSuccess ?
                                             <a className="sucess-msg" target="blank" href={"https://ropsten.etherscan.io/tx/" + this.state.txHash}><span>Transction Successful..!!</span> {this.state.txHash}</a>
                                             :
-                                            <span className="error sucess-msg">{this.state.transctionError.message}</span>
+                                            <span className="error sucess-msg">{this.state.transctionError && this.state.transctionError.message}</span>
                                     }
                                 </div>
                             </div>

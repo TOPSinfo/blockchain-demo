@@ -79,18 +79,20 @@ class ManageLands extends Component {
           });
         //change the landname and Owner Addres from the Data
         var land = this.state.landName;
+        console.log("this.props.auth", this.props.auth)
         var ownerAddress = this.props.auth.user.address;
 
         await web3.eth.getTransactionCount(config()[0].address, async (err, txCount) => {
 
           const txObject = {
             nonce: web3.utils.toHex(txCount),
-            gasLimit: web3.utils.toHex(8000000), // Raise the gas limit to a much higher amount
-            gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei')),
+                                      //  6721975
+            gasLimit: web3.utils.toHex(3000000), // Raise the gas limit to a much higher amount
+            gasPrice: web3.utils.toHex(web3.utils.toWei('100', 'gwei')),
             to: config()[0].contractAddress,
             data: contract.methods.createLand(land, ownerAddress).encodeABI()
           }
-
+          console.log("txObject", txObject)
           const tx = new Tx(txObject)
           tx.sign(Buffer.from(config()[0].privateKey, 'hex'))
 
@@ -117,7 +119,7 @@ class ManageLands extends Component {
                   reciept: data
                 }
                 this.props.createLand(createLandData);
-                // this.toogleAddLandModal()
+                this.toogleAddLandModal()
               })
             }
           })
@@ -136,6 +138,7 @@ class ManageLands extends Component {
   }
   render() {
     const { landName, submitted } = this.state;
+    console.log("this.state.transctionError", this.state.transctionError)
     return (
 
       <React.Fragment>
@@ -150,10 +153,10 @@ class ManageLands extends Component {
                 {/* <h5 className="text-white text-uppercase"></h5> */}
                 <h1 className="text-uppercase">
                   &nbsp;
-                            </h1>
+                </h1>
                 <p className="text-white pt-20 pb-20">
                   &nbsp;
-                            </p>
+                </p>
 
                 <a href="#" className="primary-btn header-btn text-uppercase">Buy Bitcoin</a>
               </div>
@@ -217,7 +220,7 @@ class ManageLands extends Component {
             <Row className="show-grid">
 
               <Col xs={12} md={12}>
-                <input type="text" onChange={this.handleOnChangeInput} id="landName" placeholder="Land Name" className={`form-control ${(submitted && !landName) || (submitted && landName.trim().length === 0)? 'add-border-color': '' }`} />
+                <input type="text" onChange={this.handleOnChangeInput} id="landName" placeholder="Land Name" className={`form-control ${(submitted && !landName) || (submitted && landName.trim().length === 0) ? 'add-border-color' : ''}`} />
               </Col>
               <Col xs={12} md={12}>
                 {
@@ -238,7 +241,7 @@ class ManageLands extends Component {
                   this.state.transctionSuccess ?
                     <a className="common-word-break" target="blank" href={"https://ropsten.etherscan.io/tx/" + this.state.txHash}>Transction Successful..!! <br></br>{this.state.txHash}</a>
                     :
-                    <span className="clr-red">{this.state.transctionError.message}</span>
+                    <span className="clr-red">{this.state.transctionError && this.state.transctionError.message}</span>
                 }
               </Col>
             </Row>
